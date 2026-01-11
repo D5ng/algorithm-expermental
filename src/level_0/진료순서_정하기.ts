@@ -17,13 +17,17 @@
 
 export function 진료순서_정하기(emergency: number[]) {
 	const sorted = [...emergency].sort((a, b) => b - a);
-	const rank = {};
+	const rank: Record<number, number> = sorted.reduce((acc, _cur, index) => {
+		const key = sorted[index];
+		const value = index + 1;
 
-	emergency.forEach((_value, index) => {
-		rank[sorted[index]] = index + 1;
-	});
+		acc[key] = value;
+		return acc;
+	}, {});
 
-	return emergency.map((value) => rank[value]);
+	const findRanking = (value: number) => rank[value];
+
+	return emergency.map(findRanking);
 }
 
 console.log(진료순서_정하기([3, 76, 24]));
