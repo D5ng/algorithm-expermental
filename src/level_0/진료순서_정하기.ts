@@ -17,8 +17,9 @@
 
 export function 진료순서_정하기(emergency: number[]) {
 	const sorted = [...emergency].sort((a, b) => b - a);
-	const rank: Record<number, number> = sorted.reduce((acc, _cur, index) => {
-		const key = sorted[index];
+
+	const rank: Record<number, number> = sorted.reduce((acc, cur, index) => {
+		const key = cur;
 		const value = index + 1;
 
 		acc[key] = value;
