@@ -1,0 +1,9 @@
+{
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.tabSize": 2,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.biome": "always",
+		"source.organizeImports.biome": "always"
+	}
+}
