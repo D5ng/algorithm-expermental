@@ -17,8 +17,13 @@
 
 export function 진료순서_정하기(emergency: number[]) {
 	const sorted = [...emergency].sort((a, b) => b - a);
-	const rank = emergency.map((value: number) => sorted.indexOf(value) + 1);
-	return rank;
+	const rank = {};
+
+	emergency.forEach((_value, index) => {
+		rank[sorted[index]] = index + 1;
+	});
+
+	return emergency.map((value) => rank[value]);
 }
 
 console.log(진료순서_정하기([3, 76, 24]));
