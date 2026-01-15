@@ -16,10 +16,11 @@
  */
 
 export function 가까운_수(array: number[], n: number) {
-	const diffs = array.map((number) => Math.abs(number - n));
-	const closest = array.filter((_number, index) => diffs[index] === Math.min(...diffs));
+	const min = Math.min(...array.map((number) => Math.abs(number - n)));
+	const closest = array.filter((number) => Math.abs(number - n) === min);
 	return Math.min(...closest);
 }
 
 console.log(가까운_수([3, 10, 28], 20));
 console.log(가까운_수([10, 11, 12], 13));
+console.log(가까운_수([4, 6], 5));
