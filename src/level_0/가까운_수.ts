@@ -16,11 +16,35 @@
  */
 
 export function 가까운_수(array: number[], n: number) {
-	const min = Math.min(...array.map((number) => Math.abs(number - n)));
-	const closest = array.filter((number) => Math.abs(number - n) === min);
-	return Math.min(...closest);
-}
+	let result = array[0];
 
-console.log(가까운_수([3, 10, 28], 20));
-console.log(가까운_수([10, 11, 12], 13));
-console.log(가까운_수([4, 6], 5));
+	for (let i = 0; i < array.length; i++) {
+		const 현재차이 = Math.abs(array[i] - n);
+		const 기존차이 = Math.abs(result - n);
+
+		if (기존차이 === 현재차이 && result > array[i]) {
+			result = array[i];
+		}
+
+		if (기존차이 > 현재차이) {
+			result = array[i];
+		}
+	}
+
+	return result;
+}
+console.log(가까운_수([3, 10, 28], 20)); // 28
+console.log(가까운_수([10, 11, 12], 13)); // 12
+console.log(가까운_수([4, 6], 5)); // 4
+console.log(가까운_수([6, 4], 5)); // 4
+
+// NOTE 첫번째 문제.
+// export function 가까운_수(array: number[], n: number) {
+// 	const min = Math.min(...array.map((number) => Math.abs(number - n)));
+// 	const closest = array.filter((number) => Math.abs(number - n) === min);
+// 	return Math.min(...closest);
+// }
+
+// console.log(가까운_수([3, 10, 28], 20));
+// console.log(가까운_수([10, 11, 12], 13));
+// console.log(가까운_수([4, 6], 5));
