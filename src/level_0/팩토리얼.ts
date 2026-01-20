@@ -13,25 +13,23 @@
  * 7	3
  */
 
-// NOTE: 문제 정의 내리기.
-// 주어진 n에 대하여 가장 큰 팩토리얼 값을 구하기.
-// 즉 팩토리얼 값과 딱 맞아 떨어지는게 아니라, 주어진 입력값에서 가장 큰 팩토리얼 값을 구하는 문제.
-// n이 factorial보다 같거나 클때까지 반복하면 if문 깔끔하게 제거
-// 지금은 1부터 시작이지만, n의 값을 "어떤 처리를 통하여" 상향식과 하향식을 정할 순 없을까?
-// 팩토리얼에 대한 이해가 필요해보인다.
-// 숫자가 많이 커진다면 어떻게 해야할까?
-
 function solution(n: number) {
-	let result = 1;
 	let fact = 1;
+	let value = 1;
 
-	while ((fact + 1) * result <= n) {
+	while (true) {
+		if (value === n) {
+			return fact;
+		}
+
+		if (value > n) {
+			return fact - 1;
+		}
+
 		fact += 1;
-		result *= fact;
+		value *= fact;
 	}
-
-	return fact;
 }
 
-console.log(solution(3628800));
-console.log(solution(1));
+console.log(solution(3628800)); // 10
+console.log(solution(7)); // 3
