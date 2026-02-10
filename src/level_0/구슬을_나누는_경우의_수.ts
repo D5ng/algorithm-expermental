@@ -16,6 +16,8 @@
  *   5			3			10
  */
 
+// 변경사항 문제..
+
 function factorial(n: number) {
 	if (n <= 1) {
 		return 1;
