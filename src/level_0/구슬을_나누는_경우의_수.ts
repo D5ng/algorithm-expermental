@@ -26,13 +26,12 @@ function 구슬을_나누는_경우의_수(balls: number, share: number) {
 	const 분자 = createCountdownArray(balls);
 	const 분모 = [...createCountdownArray(balls - share), ...createCountdownArray(share)];
 
-	for (const value of 분모) {
-		const index = 분자.indexOf(value);
-		const index2 = 분모.indexOf(value);
+	for (let i = 0; i < 분모.length; i++) {
+		const index = 분자.indexOf(분모[i]);
 
 		if (index !== -1) {
 			분자[index] = 1;
-			분모[index2] = 1;
+			분모[i] = 1;
 		}
 	}
 
