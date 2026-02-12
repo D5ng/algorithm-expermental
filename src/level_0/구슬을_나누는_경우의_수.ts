@@ -16,16 +16,30 @@
  *   5			3			10
  */
 
-function factorial(n: number) {
-	if (n <= 1) {
-		return 1;
-	}
-
-	return n * factorial(n - 1);
+function createCountdownArray(n: number) {
+	return Array.from({ length: n })
+		.fill(n)
+		.map((_, index) => n - index);
 }
 
 function 구슬을_나누는_경우의_수(balls: number, share: number) {
-	return factorial(balls) / (factorial(balls - share) * factorial(share));
+	const 분자 = createCountdownArray(balls);
+	const 분모 = [...createCountdownArray(balls - share), ...createCountdownArray(share)];
+
+	for (const value of 분모) {
+		const index = 분자.indexOf(value);
+		const index2 = 분모.indexOf(value);
+
+		if (index !== -1) {
+			분자[index] = 1;
+			분모[index2] = 1;
+		}
+	}
+
+	const 분자reduce = 분자.reduce((acc, cur) => acc * cur, 1);
+	const 분모reduce = 분모.reduce((acc, cur) => acc * cur, 1);
+
+	return Math.round(분자reduce / 분모reduce);
 }
 
 console.log(구슬을_나누는_경우의_수(3, 2));
