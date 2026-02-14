@@ -14,6 +14,7 @@
  * balls	share	result
  *   3			2			3
  *   5			3			10
+ *
  */
 
 function createCountdownArray(n: number) {
@@ -22,25 +23,31 @@ function createCountdownArray(n: number) {
 		.map((_, index) => n - index);
 }
 
+function multiply(...numbers: number[]) {
+	return numbers.reduce((acc, value) => acc * value, 1);
+}
+
 function 구슬을_나누는_경우의_수(balls: number, share: number) {
-	const 분자 = createCountdownArray(balls);
-	const 분모 = [...createCountdownArray(balls - share), ...createCountdownArray(share)];
+	const molecule = createCountdownArray(balls);
+	const denominator = [...createCountdownArray(balls - share), ...createCountdownArray(share)];
 
-	for (let i = 0; i < 분모.length; i++) {
-		const index = 분자.indexOf(분모[i]);
+	for (const moleculeValue of molecule) {
+		const reducedMoleculeIndex = molecule.indexOf(moleculeValue);
+		const reducedDenominatorIndex = denominator.indexOf(moleculeValue);
 
-		if (index !== -1) {
-			분자[index] = 1;
-			분모[i] = 1;
+		if (reducedDenominatorIndex !== -1) {
+			denominator[reducedDenominatorIndex] = 1;
+			molecule[reducedMoleculeIndex] = 1;
 		}
+
+		const resultOfMoleculeMultiplication = multiply(...molecule);
+		const resultOfDenominatorMultiplication = multiply(...denominator);
+
+		return Math.round(resultOfMoleculeMultiplication / resultOfDenominatorMultiplication);
 	}
-
-	const 분자reduce = 분자.reduce((acc, cur) => acc * cur, 1);
-	const 분모reduce = 분모.reduce((acc, cur) => acc * cur, 1);
-
-	return Math.round(분자reduce / 분모reduce);
 }
 
 console.log(구슬을_나누는_경우의_수(3, 2));
 console.log(구슬을_나누는_경우의_수(5, 3));
 console.log(구슬을_나누는_경우의_수(1, 1));
+console.log(구슬을_나누는_경우의_수(30, 15));
