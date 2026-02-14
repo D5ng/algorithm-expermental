@@ -14,20 +14,40 @@
  * balls	share	result
  *   3			2			3
  *   5			3			10
+ *
  */
 
-function factorial(n: number) {
-	if (n <= 1) {
-		return 1;
-	}
+function createCountdownArray(n: number) {
+	return Array.from({ length: n })
+		.fill(n)
+		.map((_, index) => n - index);
+}
 
-	return n * factorial(n - 1);
+function multiply(...numbers: number[]) {
+	return numbers.reduce((acc, value) => acc * value, 1);
 }
 
 function 구슬을_나누는_경우의_수(balls: number, share: number) {
-	return factorial(balls) / (factorial(balls - share) * factorial(share));
+	const molecule = createCountdownArray(balls);
+	const denominator = [...createCountdownArray(balls - share), ...createCountdownArray(share)];
+
+	for (const moleculeValue of molecule) {
+		const reducedMoleculeIndex = molecule.indexOf(moleculeValue);
+		const reducedDenominatorIndex = denominator.indexOf(moleculeValue);
+
+		if (reducedDenominatorIndex !== -1) {
+			denominator[reducedDenominatorIndex] = 1;
+			molecule[reducedMoleculeIndex] = 1;
+		}
+	}
+
+	const resultOfMoleculeMultiplication = multiply(...molecule);
+	const resultOfDenominatorMultiplication = multiply(...denominator);
+
+	return Math.round(resultOfMoleculeMultiplication / resultOfDenominatorMultiplication);
 }
 
 console.log(구슬을_나누는_경우의_수(3, 2));
 console.log(구슬을_나누는_경우의_수(5, 3));
 console.log(구슬을_나누는_경우의_수(1, 1));
+console.log(구슬을_나누는_경우의_수(30, 15));
