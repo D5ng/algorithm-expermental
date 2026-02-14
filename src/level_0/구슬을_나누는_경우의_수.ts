@@ -39,12 +39,12 @@ function 구슬을_나누는_경우의_수(balls: number, share: number) {
 			denominator[reducedDenominatorIndex] = 1;
 			molecule[reducedMoleculeIndex] = 1;
 		}
-
-		const resultOfMoleculeMultiplication = multiply(...molecule);
-		const resultOfDenominatorMultiplication = multiply(...denominator);
-
-		return Math.round(resultOfMoleculeMultiplication / resultOfDenominatorMultiplication);
 	}
+
+	const resultOfMoleculeMultiplication = multiply(...molecule);
+	const resultOfDenominatorMultiplication = multiply(...denominator);
+
+	return Math.round(resultOfMoleculeMultiplication / resultOfDenominatorMultiplication);
 }
 
 console.log(구슬을_나누는_경우의_수(3, 2));
