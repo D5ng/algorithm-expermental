@@ -24,39 +24,43 @@ function adjustBoardSize(board: number[]) {
 	return board.map((value) => Math.floor(value / 2));
 }
 
-function 캐릭터의_좌표(keyinput: string[], board: number[]) {
-	const [maxX, maxY] = adjustBoardSize(board);
+const direction = {
+	left: -1,
+	right: 1,
+	up: 1,
+	down: -1,
+};
+
+function move(keyinput: string[], maxRange: number[]) {
+	const [maxX, maxY] = maxRange;
 
 	let x = 0;
 	let y = 0;
 
 	for (const key of keyinput) {
-		if (key === "left") {
-			x -= 1;
+		if (key === "left" || key === "right") {
+			x += direction[key];
 		}
 
-		if (key === "right") {
-			x += 1;
+		if (key === "up" || key === "down") {
+			y += direction[key];
 		}
 
-		if (key === "up") {
-			y += 1;
-		}
-
-		if (key === "down") {
-			y -= 1;
-		}
-
-		if (Math.abs(x) > maxX) {
+		if (x > maxX || x < -maxX) {
 			x = Math.max(-maxX, Math.min(maxX, x));
 		}
 
-		if (Math.abs(y) > maxY) {
+		if (y > maxY || y < -maxY) {
 			y = Math.max(-maxY, Math.min(maxY, y));
 		}
 	}
 
 	return [x, y];
+}
+
+function 캐릭터의_좌표(keyinput: string[], board: number[]) {
+	const maxRange = adjustBoardSize(board);
+	return move(keyinput, maxRange);
 }
 
 console.log(캐릭터의_좌표(["left", "right", "up", "right", "right"], [11, 11])); // [2, 1]
