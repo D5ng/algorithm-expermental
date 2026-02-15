@@ -25,10 +25,10 @@ function adjustBoardSize(board: number[]) {
 }
 
 const direction = {
-	left: -1,
-	right: 1,
-	up: 1,
-	down: -1,
+	left: [-1, 0],
+	right: [1, 0],
+	up: [0, 1],
+	down: [0, -1],
 };
 
 function move(keyinput: string[], maxRange: number[]) {
@@ -38,21 +38,9 @@ function move(keyinput: string[], maxRange: number[]) {
 	let y = 0;
 
 	for (const key of keyinput) {
-		if (key === "left" || key === "right") {
-			x += direction[key];
-		}
-
-		if (key === "up" || key === "down") {
-			y += direction[key];
-		}
-
-		if (x > maxX || x < -maxX) {
-			x = Math.max(-maxX, Math.min(maxX, x));
-		}
-
-		if (y > maxY || y < -maxY) {
-			y = Math.max(-maxY, Math.min(maxY, y));
-		}
+		const [dx, dy] = direction[key];
+		x = Math.max(-maxX, Math.min(maxX, x + dx));
+		y = Math.max(-maxY, Math.min(maxY, y + dy));
 	}
 
 	return [x, y];
