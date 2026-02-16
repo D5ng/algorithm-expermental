@@ -37,6 +37,10 @@ function calculateMaxMovementRange(boardDimensions: number[]): Coordinate {
 	return [Math.floor(width / 2), Math.floor(height / 2)];
 }
 
+function clampToLimit(value: number, limit: number): number {
+	return Math.max(-limit, Math.min(limit, value));
+}
+
 // keyinput에 따라 이동 범위를 계산하는 함수
 // 즉 최종 좌표를 계산하는 함수
 function calculateFinalCoordinates(keyinput: string[], movementBoundary: Coordinate): Coordinate {
@@ -47,8 +51,8 @@ function calculateFinalCoordinates(keyinput: string[], movementBoundary: Coordin
 
 	for (const key of keyinput) {
 		const [dx, dy] = DIRECTION_OFFSET[key];
-		currentX = Math.max(-maxX, Math.min(maxX, currentX + dx));
-		currentY = Math.max(-maxY, Math.min(maxY, currentY + dy));
+		currentX = clampToLimit(currentX + dx, maxX);
+		currentY = clampToLimit(currentY + dy, maxY);
 	}
 
 	return [currentX, currentY];
