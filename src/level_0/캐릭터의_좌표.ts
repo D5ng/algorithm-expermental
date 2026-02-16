@@ -27,28 +27,36 @@ const DIRECTION_OFFSET: Record<string, [number, number]> = {
 	down: [0, -1],
 };
 
-function adjustBoardSize(board: number[]) {
-	return board.map((value) => Math.floor(value / 2));
+type Coordinate = [x: number, y: number];
+
+// 최대 이동 범위를 계산하는 함수
+function calculateMaxMovementRange(boardDimensions: number[]): Coordinate {
+	const [width, height] = boardDimensions;
+	// 변경 가능성을 고려하여 map을 사용하지 않음.
+	// `boardDimensions.map((value) => Math.floor(value / 2))` 라는 코드를 작성해도 되지만, 정책이 변경된다면 이 코드는 사용할 수 없게됨.
+	return [Math.floor(width / 2), Math.floor(height / 2)];
 }
 
-function move(keyinput: string[], maxRange: number[]) {
-	const [maxX, maxY] = maxRange;
+// keyinput에 따라 이동 범위를 계산하는 함수
+// 즉 최종 좌표를 계산하는 함수
+function calculateFinalCoordinates(keyinput: string[], movementBoundary: Coordinate): Coordinate {
+	const [maxX, maxY] = movementBoundary;
 
-	let x = 0;
-	let y = 0;
+	let currentX = 0;
+	let currentY = 0;
 
 	for (const key of keyinput) {
 		const [dx, dy] = DIRECTION_OFFSET[key];
-		x = Math.max(-maxX, Math.min(maxX, x + dx));
-		y = Math.max(-maxY, Math.min(maxY, y + dy));
+		currentX = Math.max(-maxX, Math.min(maxX, currentX + dx));
+		currentY = Math.max(-maxY, Math.min(maxY, currentY + dy));
 	}
 
-	return [x, y];
+	return [currentX, currentY];
 }
 
 function 캐릭터의_좌표(keyinput: string[], board: number[]) {
-	const maxRange = adjustBoardSize(board);
-	return move(keyinput, maxRange);
+	const movementBoundary = calculateMaxMovementRange(board);
+	return calculateFinalCoordinates(keyinput, movementBoundary);
 }
 
 console.log(캐릭터의_좌표(["left", "right", "up", "right", "right"], [11, 11])); // [2, 1]
