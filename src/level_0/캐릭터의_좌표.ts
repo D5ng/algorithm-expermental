@@ -20,16 +20,16 @@
  * ["down", "down", "down", "down", "down"]	[7, 9]	[0, -4]
  */
 
-function adjustBoardSize(board: number[]) {
-	return board.map((value) => Math.floor(value / 2));
-}
-
-const direction = {
+const DIRECTION_OFFSET: Record<string, [number, number]> = {
 	left: [-1, 0],
 	right: [1, 0],
 	up: [0, 1],
 	down: [0, -1],
 };
+
+function adjustBoardSize(board: number[]) {
+	return board.map((value) => Math.floor(value / 2));
+}
 
 function move(keyinput: string[], maxRange: number[]) {
 	const [maxX, maxY] = maxRange;
@@ -38,7 +38,7 @@ function move(keyinput: string[], maxRange: number[]) {
 	let y = 0;
 
 	for (const key of keyinput) {
-		const [dx, dy] = direction[key];
+		const [dx, dy] = DIRECTION_OFFSET[key];
 		x = Math.max(-maxX, Math.min(maxX, x + dx));
 		y = Math.max(-maxY, Math.min(maxY, y + dy));
 	}
