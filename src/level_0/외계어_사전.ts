@@ -23,11 +23,16 @@
  */
 
 export function 외계어_사전(spell: string[], dic: string[]) {
-	const sortedSpell = [...spell].sort().join("");
-	const sortedDic = dic.map((d) => [...d].sort().join(""));
-	const matchedIndex = sortedDic.indexOf(sortedSpell);
+	const targetSpell = [...spell].sort().join("");
+	const hasMatch = dic.some((word) => {
+		if (word.length !== targetSpell.length) {
+			return false;
+		}
 
-	return matchedIndex === -1 ? 2 : 1;
+		return [...word].sort().join("") === targetSpell;
+	});
+
+	return hasMatch ? 1 : 2;
 }
 
 console.log(외계어_사전(["p", "o", "s"], ["sod", "eocd", "qixm", "adio", "soo"]));
