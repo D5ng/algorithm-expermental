@@ -16,26 +16,21 @@
  */
 
 export function pick<T extends object, K extends keyof T>(sourceObject: T, keysToPick: K[]): Pick<T, K> {
-	const resultObject = {} as Partial<T>;
-
-	for (const key of keysToPick) {
-		if (sourceObject[key]) {
-			resultObject[key] = sourceObject[key];
-		}
-	}
-
-	return resultObject as Pick<T, K>;
+	const pickSet = new Set(keysToPick);
+	return createFilterObject(sourceObject, (key: K) => pickSet.has(key)) as Pick<T, K>;
 }
 
 export function omit<T extends object, K extends keyof T>(sourceObject: T, keysToOmit: K[]): Omit<T, K> {
-	const resultObject = {} as Partial<T>;
 	const omitSet = new Set<PropertyKey>(keysToOmit);
+	return createFilterObject(sourceObject, (key: K) => !omitSet.has(key)) as Omit<T, K>;
+}
 
-	for (const key of Object.keys(sourceObject)) {
-		if (!omitSet.has(key)) {
-			resultObject[key] = sourceObject[key];
-		}
-	}
-
-	return resultObject as Omit<T, K>;
+function createFilterObject<T extends object>(
+	sourceObject: T,
+	predicate: (key: keyof T, value: T[keyof T]) => boolean,
+): Partial<T> {
+	const matchingPropertyEntries = Object.entries(sourceObject).filter(([key, value]) =>
+		predicate(key as keyof T, value),
+	);
+	return Object.fromEntries(matchingPropertyEntries) as Partial<T>;
 }
