@@ -27,7 +27,7 @@ export function pick<T extends object, K extends keyof T>(sourceObject: T, keysT
 	return resultObject as Pick<T, K>;
 }
 
-export function omit<T, K extends keyof T>(sourceObject: T, keysToOmit: K[]): Omit<T, K> {
+export function omit<T extends object, K extends keyof T>(sourceObject: T, keysToOmit: K[]): Omit<T, K> {
 	const resultObject = {} as Partial<T>;
 	const omitSet = new Set<PropertyKey>(keysToOmit);
 
