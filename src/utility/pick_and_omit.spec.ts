@@ -11,6 +11,7 @@ describe("pick & omit 유틸리티 함수 테스트", () => {
 		});
 
 		it("pick 함수는 존재하지 않는 키를 무시해야 한다.", () => {
+			// biome-ignore lint/suspicious/noExplicitAny: user type이 아닌 값이 들어올 때를 위해 사용
 			const picked = pick(user, ["name", "email", "nonExist" as any]);
 			expect(picked).toEqual({ name: "Gemini", email: "ai@google.com" });
 		});
