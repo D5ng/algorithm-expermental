@@ -9,11 +9,15 @@
  *    - 배열 내부의 요소가 객체나 다른 참조 타입일 경우 참조가 깨지지 않게 주의.
  */
 
+function canFlatten(value: any, depth: number) {
+	return Array.isArray(value) && depth > 0;
+}
+
 export function flatten(arr: any[], depth: number = 1) {
 	const flattened = [];
 
 	for (const value of arr) {
-		if (Array.isArray(value) && depth > 0) {
+		if (canFlatten(value, depth)) {
 			flattened.push(...flatten(value, depth - 1));
 		} else {
 			flattened.push(value);
