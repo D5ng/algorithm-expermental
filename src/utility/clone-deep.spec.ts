@@ -56,7 +56,8 @@ describe("cloneDeep", () => {
 	});
 
 	it("순환 참조가 있는 객체도 안전하게 깊은 복사한다", () => {
-		const source: any = { tag: "circle" };
+		// biome-ignore lint/suspicious/noExplicitAny: 어떤 데이터 타입의 객체로 들어올지 예측할 수 없음
+		const source: Record<string, any> = { tag: "circle" };
 		source.self = source;
 
 		const cloned = cloneDeep(source);
