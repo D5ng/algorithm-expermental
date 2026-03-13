@@ -9,12 +9,12 @@
  */
 
 export function cloneDeep<T>(sourceObject: T, hash = new WeakMap()): T {
-	if (!isReference(sourceObject)) {
+	if (isPrimitive(sourceObject)) {
 		return sourceObject;
 	}
 
-	if (hash.has(sourceObject)) {
-		return hash.get(sourceObject) as T;
+	if (hash.has(sourceObject as object)) {
+		return hash.get(sourceObject as object)
 	}
 
 	if (isDate(sourceObject)) {
@@ -26,7 +26,7 @@ export function cloneDeep<T>(sourceObject: T, hash = new WeakMap()): T {
 	}
 
 	const container = (Array.isArray(sourceObject) ? [] : {}) as T;
-	hash.set(sourceObject, container);
+	hash.set(sourceObject as object, container);
 
 	for (const [key, value] of Object.entries(sourceObject)) {
 		container[key] = cloneDeep(value, hash);
@@ -35,9 +35,10 @@ export function cloneDeep<T>(sourceObject: T, hash = new WeakMap()): T {
 	return container;
 }
 
-function isReference(data: unknown): data is object {
-	return typeof data === "object" && data !== null;
+function isPrimitive(data: unknown): data is string | number | boolean | null | undefined | symbol | bigint {
+	return data === null || data === undefined || typeof data === "string" || typeof data === "number" || typeof data === "boolean" || typeof data === "symbol" || typeof data === "bigint";
 }
+
 
 function isDate(data: unknown): data is Date {
 	return data instanceof Date;
