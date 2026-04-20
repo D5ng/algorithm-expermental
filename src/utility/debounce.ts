@@ -13,11 +13,11 @@ export function debounce<T extends (...args: any[]) => any>(
   return function (this: any, ...args: Parameters<T>): void {
     if (timeoutId) {
       clearTimeout(timeoutId);
-      timeoutId = null;
     }
 
     timeoutId = setTimeout(() => {
       callback.apply(this, args);
+      timeoutId = null;
     }, delay);
   };
 }
