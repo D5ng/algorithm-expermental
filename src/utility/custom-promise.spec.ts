@@ -7,28 +7,28 @@ function flushMicrotasks(): Promise<void> {
 }
 
 describe("custom Promise", () => {
-  // it("resolve되면 then 콜백에 값이 전달되어야 한다", async () => {
-  //   const onFulfilled = vi.fn();
-  //   const promise = new CustomPromise<number>((resolve) => resolve(42));
+  it("resolve되면 then 콜백에 값이 전달되어야 한다", async () => {
+    const onFulfilled = vi.fn();
+    const promise = new CustomPromise<number>((resolve) => resolve(42));
 
-  //   promise.then(onFulfilled);
-  //   await flushMicrotasks();
+    promise.then(onFulfilled);
+    await flushMicrotasks();
 
-  //   expect(onFulfilled).toHaveBeenCalledOnce();
-  //   expect(onFulfilled).toHaveBeenCalledWith(42);
-  // });
+    expect(onFulfilled).toHaveBeenCalledOnce();
+    expect(onFulfilled).toHaveBeenCalledWith(42);
+  });
 
-  // it("reject되면 catch 콜백에 reason이 전달되어야 한다", async () => {
-  //   const onRejected = vi.fn();
-  //   const error = new Error("failed");
-  //   const promise = new CustomPromise((_resolve, reject) => reject(error));
+  it("reject되면 catch 콜백에 reason이 전달되어야 한다", async () => {
+    const onRejected = vi.fn();
+    const error = new Error("failed");
+    const promise = new CustomPromise((_resolve, reject) => reject(error));
 
-  //   promise.catch(onRejected);
-  //   await flushMicrotasks();
+    promise.catch(onRejected);
+    await flushMicrotasks();
 
-  //   expect(onRejected).toHaveBeenCalledOnce();
-  //   expect(onRejected).toHaveBeenCalledWith(error);
-  // });
+    expect(onRejected).toHaveBeenCalledOnce();
+    expect(onRejected).toHaveBeenCalledWith(error);
+  });
 
   it("then은 항상 새로운 Promise를 반환해야 한다", () => {
     const promise = new CustomPromise<number>((resolve) => resolve(1));
@@ -61,14 +61,14 @@ describe("custom Promise", () => {
     expect(onFulfilled).toHaveBeenCalledOnce();
   });
 
-  // it("catch 콜백은 microtask에서 비동기로 실행되어야 한다", async () => {
-  //   const onRejected = vi.fn();
-  //   new CustomPromise((_resolve, reject) => reject("err")).catch(onRejected);
+  it("catch 콜백은 microtask에서 비동기로 실행되어야 한다", async () => {
+    const onRejected = vi.fn();
+    new CustomPromise((_resolve, reject) => reject("err")).catch(onRejected);
 
-  //   expect(onRejected).not.toHaveBeenCalled();
+    expect(onRejected).not.toHaveBeenCalled();
 
-  //   await flushMicrotasks();
+    await flushMicrotasks();
 
-  //   expect(onRejected).toHaveBeenCalledOnce();
-  // });
+    expect(onRejected).toHaveBeenCalledOnce();
+  });
 });
