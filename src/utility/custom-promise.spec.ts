@@ -34,9 +34,6 @@ describe("custom Promise", () => {
     const promise = new CustomPromise<number>((resolve) => resolve(1));
     const next = promise.then((value) => value + 1);
 
-    console.log("promise", promise);
-    console.log("next", next);
-
     expect(next).not.toBe(promise);
     expect(next).toBeInstanceOf(CustomPromise);
   });
@@ -47,7 +44,6 @@ describe("custom Promise", () => {
       .then((value) => value * 2);
 
     await expect(promise).resolves.toBe(4);
-    console.log(promise);
   });
 
   it("then 콜백은 microtask에서 비동기로 실행되어야 한다", async () => {
@@ -70,5 +66,41 @@ describe("custom Promise", () => {
     await flushMicrotasks();
 
     expect(onRejected).toHaveBeenCalledOnce();
+  });
+
+  describe("static resolve / reject", () => {
+    it("CustomPromise.resolve(value)는 fulfilled Promise를 반환해야 한다", async () => {
+      const promise = CustomPromise.resolve(42);
+
+      expect(promise).toBeInstanceOf(CustomPromise);
+      await expect(promise).resolves.toBe(42);
+    });
+
+    it("CustomPromise.resolve로 만든 Promise는 then 체이닝이 가능해야 한다", async () => {
+      const promise = CustomPromise.resolve(1)
+        .then((value) => value + 1)
+        .then((value) => value * 2);
+
+      await expect(promise).resolves.toBe(4);
+    });
+
+    it("CustomPromise.reject(reason)는 rejected Promise를 반환해야 한다", async () => {
+      const error = new Error("failed");
+      const promise = CustomPromise.reject(error);
+
+      expect(promise.status).toBe("rejected");
+      expect(promise.result).toBe(error);
+    });
+
+    it("CustomPromise.reject로 만든 Promise는 catch로 reason을 받을 수 있어야 한다", async () => {
+      const onRejected = vi.fn();
+      const error = new Error("failed");
+
+      CustomPromise.reject(error).catch(onRejected);
+      await flushMicrotasks();
+
+      expect(onRejected).toHaveBeenCalledOnce();
+      expect(onRejected).toHaveBeenCalledWith(error);
+    });
   });
 });
