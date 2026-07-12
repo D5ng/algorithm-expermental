@@ -1,5 +1,10 @@
 type PromiseStatus = "pending" | "fulfilled" | "rejected";
 
+type PromiseState<T> =
+  | { status: "pending" }
+  | { status: "fulfilled"; value: T }
+  | { status: "rejected"; reason: unknown };
+
 type OnFulfilled<T, R> = (value: T) => R | PromiseLike<R>;
 type PromiseReject = (reason?: unknown) => void;
 
@@ -9,12 +14,10 @@ type Executor<T> = (
 ) => void;
 
 export class CustomPromise<T> {
-  status: PromiseStatus;
-  result: undefined | T;
+  private state: PromiseState<T>;
 
   constructor(executor: Executor<T>) {
-    this.status = "pending";
-    this.result = undefined;
+    this.state = { status: "pending" };
 
     executor(
       (resolve) => this.resolve(resolve),
@@ -22,17 +25,35 @@ export class CustomPromise<T> {
     );
   }
 
+  get status(): PromiseStatus {
+    return this.state.status;
+  }
+
+  get result(): T | unknown | undefined {
+    switch (this.state.status) {
+      case "fulfilled":
+        return this.state.value;
+      case "rejected":
+        return this.state.reason;
+      default:
+        return undefined;
+    }
+  }
+
   then<R>(onFulfilled: OnFulfilled<T, R>, onRejected?: PromiseReject) {
     return new CustomPromise<T>((resolve, reject) => {
       queueMicrotask(() => {
-        if (this.status === "fulfilled") {
-          const result = onFulfilled(this.result) as T;
+        if (this.state.status === "fulfilled") {
+          const result = onFulfilled(this.state.value) as T;
           resolve(result);
         }
 
-        if (this.status === "rejected") {
-          const result = onRejected(this.result);
-          reject(result);
+        if (this.state.status === "rejected") {
+          if (onRejected) {
+            onRejected(this.state.reason);
+          } else {
+            reject(this.state.reason);
+          }
         }
       });
     });
@@ -43,13 +64,11 @@ export class CustomPromise<T> {
   }
 
   private resolve(value: T) {
-    this.status = "fulfilled";
-    this.result = value;
+    this.state = { status: "fulfilled", value };
   }
 
   private reject(reason?: unknown) {
-    this.status = "rejected";
-    this.result = reason as T;
+    this.state = { status: "rejected", reason };
   }
 
   static resolve<T>(value: T): CustomPromise<T> {
