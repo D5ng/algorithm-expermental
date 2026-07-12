@@ -13,6 +13,23 @@ function curry(fn: CurriedFunction) {
   // fn이 부분적으로 적용할 함수이기 때문에, fn의 매개변수를 받아온다
   // fn과 실제 인수를 받을 함수의 매개변수 개수로 비교한다.
 
+  // 함수의 매개변수와, curried 함수가 받은 매개변수를 비교.
+  const curried = (...args: any[]) => {
+    if (args.length >= fn.length) {
+      return fn(...args);
+    }
+    // 즉 이전에 호출받은 인수를 어떻게 기억할 것인가가 핵심
+    // 그러면 클로저를 사용하면 되지않을까?
+    return (...nextArgs: any[]) => {
+      // 반환된 익명 함수가 curried 함수의 args에 참조할 수 있어야 한다.
+      // 따라서 클로저를 사용하여 해결할 수 있음
+      const mergedArgs = [...args, ...nextArgs];
+      return curried.apply(null, mergedArgs);
+    };
+  };
+
+  return curried;
+
   const curring = (...args: any[]): ReturnType<CurriedFunction> => {
     if (fn.length > args.length) {
       // 1이 들어왔는데 여기서 다음 2를 받아야해. 여기서 함수를 하나 더 만들 순 없을것 같아.
