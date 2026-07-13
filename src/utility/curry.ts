@@ -8,8 +8,8 @@ function curry(fn: CurriedFunction) {
       return fn(...args);
     }
 
-    return (...args2: any[]) => {
-      return curried.call(null, ...args, ...args2);
+    return (...nextArgs: any[]) => {
+      return curried.call(null, ...args, ...nextArgs);
     };
   };
 }
