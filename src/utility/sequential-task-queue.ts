@@ -52,8 +52,6 @@ export class SequentialTaskQueue {
       // 작업 대기열에서 가장 오래된 함수를 꺼내기
       const queue = this.taskQueue.shift();
 
-      console.log("무한 실행?");
-
       // 각 작업들이 성공, 실패와 상관없이 진행하도록 구현
       await queue()
         .then(() => {
