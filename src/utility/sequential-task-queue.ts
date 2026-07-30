@@ -4,12 +4,10 @@ export class SequentialTaskQueue {
   // 작업 대기열 큐
   private taskQueue: AsyncTask[];
   private isRunning: boolean;
-  private isTaskRunning: boolean;
 
   constructor() {
     this.taskQueue = [];
     this.isRunning = false;
-    this.isTaskRunning = false;
   }
   /**
    * 큐를 추가할 수 있는 메서드
@@ -37,41 +35,47 @@ export class SequentialTaskQueue {
    * @returns
    */
   async run(): Promise<void> {
-    // 작업이 실행되면 중복 호출 방지
-    if (this.isRunning) {
+    // task가 비어있거나, run 메서드가 진행 중 이라면
+    if (!this.hasPendingTask() || this.isRunning) {
       return;
     }
 
     this.isRunning = true;
 
     // 대기열에 등록된 작업이 없을 때 까지 반복
-    // 작업의 상태가 진행중이지 않을 때만 실행하도록 개선 가능할듯?
-    while (this.taskQueue.length > 0 && !this.isTaskRunning) {
-      this.isTaskRunning = true;
-
-      // 작업 대기열에서 가장 오래된 함수를 꺼내기
-      const queue = this.taskQueue.shift();
-
-      // 각 작업들이 성공, 실패와 상관없이 진행하도록 구현
-      await queue()
-        .then(() => {
-          console.log(`result`);
-        })
-        .catch((reject) => {
-          console.log(`reject: ${reject}`);
-        })
-        .finally(() => {
-          this.isTaskRunning = false;
-        });
-
-      // 더 이상 실행할 작업 대기열이 없다면 실행 중이 아닌 상태로 변경
-      if (queue.length === 0) {
-        this.isRunning = false;
-      }
+    while (this.hasPendingTask()) {
+      await this.processNextTask();
     }
+
+    this.isRunning = false;
   }
 
   get size(): number {
     return this.taskQueue.length;
+  }
+
+  // 다음 작업을 처리하는 함수
+  private async processNextTask() {
+    // 작업 대기열에서 가장 오래된 함수를 꺼내기
+    const task = this.taskQueue.shift();
+
+    if (typeof task === "undefined") {
+      return;
+    }
+
+    // task 함수 실행 및 내부에서 에러가 발생했을 때를 대비
+    try {
+      await task();
+    } catch (error) {
+      console.error(`에러가 발생했어요: ${error}`);
+    }
+  }
+
+  // 작업 큐가 비어있는지 판별
+  // 작업이 비어있는지 판별하는것과 대기중인 작업이 있냐
+  // 대기중인 작업이 비어있는지 vs 대기중이 작업이 있는지?
+  // 긍정형이 조금 더 읽기 쉽다.
+  private hasPendingTask() {
+    return this.taskQueue.length > 0;
   }
 }
