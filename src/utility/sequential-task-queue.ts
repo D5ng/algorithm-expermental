@@ -54,7 +54,15 @@ export class SequentialTaskQueue {
     return this.taskQueue.length;
   }
 
-  // 다음 작업을 처리하는 함수
+  /**
+   * 다음 작업을 처리하는 함수
+   * 책임:
+   * 대기열 큐에서 가장 오래된 작업을 꺼낸다
+   * 작업이 없다면 무시한다
+   * 작업을 실행한다
+   * 작업이 실패하면 에러가 발생한다
+   * @returns
+   */
   private async processNextTask() {
     // 작업 대기열에서 가장 오래된 함수를 꺼내기
     const task = this.taskQueue.shift();
