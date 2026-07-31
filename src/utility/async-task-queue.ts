@@ -1,55 +1,18 @@
+// 지정된 최대 동시 실행 개수 제한에 따라 비동기 작업의 실행을 관리하는 `AsyncTaskQueue` 클래스를 설계하고 구현하세요.
+
+// 작업 큐는 다음 조건을 만족해야 합니다.
+
+// * 작업은 추가된 순서대로 실행되어야 합니다. 즉, FIFO(선입선출)를 따라야 합니다.
+// * 동시에 실행되는 작업의 수는 지정된 최대 동시 실행 개수를 초과해서는 안 됩니다.
+// * 작업이 반환한 Promise가 거부되더라도 해당 오류는 별도의 처리 없이 무시해야 합니다.
+// * 어떤 작업이 실패하더라도 큐는 중단되지 않고 남아 있는 작업을 계속 처리해야 합니다.
+
 export class AsyncTaskQueue {
-  private concurrency: number;
-  private 현재_동시_실행_개수: number;
-  private 실행_대기_배열: (() => Promise<unknown>)[];
-
-  constructor(concurrency: number) {
+  constructor(concurrency) {
     // Initialize the queue with the specified concurrency limit
-    this.concurrency = concurrency;
-    // 현재 실행 중인 수가 최대 실행 개수보다 넘으면 안됨.
-    this.현재_동시_실행_개수 = 0;
-    // 실행 대기중인 것을 담기위한 배열
-    this.실행_대기_배열 = [];
   }
-  queue(task: () => Promise<unknown>) {
+  queue(task) {
     // Add an async task to the queue
-    // [task1]
-    // [task1, task2]
-    // [task1, task2, task3]
-    // task1: 실행
-    // task2: 실행
-    // task3: task1, task2가 작업이 끝난게 아니라면 대기.
-
-    // 현재 실행 개수가 최대 동시 실행 개수보다 작으면 실행
-    if (this.현재_동시_실행_개수 < this.concurrency) {
-      this.현재_동시_실행_개수 += 1;
-
-      task()
-        .then(() => {
-          this.현재_동시_실행_개수 -= 1;
-          const 가장_오래된_함수 = this.실행_대기_배열.shift();
-
-          if (typeof 가장_오래된_함수 === "undefined") {
-            return;
-          }
-
-          try {
-            가장_오래된_함수();
-          } catch (error) {}
-        })
-        .catch(() => {
-          this.현재_동시_실행_개수 -= 1;
-          const 가장_오래된_함수 = this.실행_대기_배열.shift();
-
-          if (typeof 가장_오래된_함수 === "undefined") {
-            return;
-          }
-
-          가장_오래된_함수();
-        });
-    } else {
-      this.실행_대기_배열.push(task);
-    }
   }
 }
 
