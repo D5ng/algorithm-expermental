@@ -68,6 +68,10 @@ export class SequentialTaskQueue<Task extends AsyncTask = AsyncTask> {
     // 가장 오래된 작업 꺼내기
     const nextTask = this.queue.shift();
 
+    if (nextTask === undefined) {
+      return;
+    }
+
     try {
       await nextTask();
     } catch {
