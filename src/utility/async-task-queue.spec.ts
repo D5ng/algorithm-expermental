@@ -308,5 +308,50 @@ describe("AsyncTaskQueue", () => {
 
 			expect(throwingTask).toHaveBeenCalledOnce();
 		});
+
+		it("Promise 를 반환하기 전에 동기적으로 throw 해도 queue() 호출부로 새지 않는다", () => {
+			const queue = new AsyncTaskQueue(1);
+			const syncThrowTask = vi.fn(() => {
+				throw new Error("sync");
+			});
+
+			expect(() => queue.queue(syncThrowTask)).not.toThrow();
+			expect(syncThrowTask).toHaveBeenCalledOnce();
+		});
+
+		it("동기적으로 throw 하는 작업 뒤에도 큐가 계속 진행된다", async () => {
+			const tracker = createTracker();
+			const queue = new AsyncTaskQueue(1);
+			const syncThrowTask = vi.fn(() => {
+				throw new Error("sync");
+			});
+			const next = tracker.createTask("next");
+
+			queue.queue(syncThrowTask);
+			queue.queue(next);
+
+			await vi.advanceTimersByTimeAsync(100);
+
+			expect(next).toHaveBeenCalledOnce();
+			expect(tracker.log).toEqual(["next:start", "next:resolve"]);
+		});
+
+		it("대기열에서 꺼낸 작업이 동기적으로 throw 해도 그 뒤 작업이 실행된다", async () => {
+			const tracker = createTracker();
+			const queue = new AsyncTaskQueue(1);
+			const syncThrowTask = vi.fn(() => {
+				throw new Error("sync");
+			});
+
+			// 첫 작업이 끝난 뒤 대기열에서 꺼내지는 시점에 throw 하는 경우
+			queue.queue(tracker.createTask("ok"));
+			queue.queue(syncThrowTask);
+			queue.queue(tracker.createTask("last"));
+
+			await vi.advanceTimersByTimeAsync(1000);
+
+			expect(syncThrowTask).toHaveBeenCalledOnce();
+			expect(tracker.log.filter((entry) => entry.endsWith(":start"))).toEqual(["ok:start", "last:start"]);
+		});
 	});
 });
