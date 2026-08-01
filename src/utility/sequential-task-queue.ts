@@ -52,11 +52,13 @@ export class SequentialTaskQueue<Task extends AsyncTask = AsyncTask> {
 
     this.isRunning = true;
 
-    while (this.hasTask) {
-      await this.runNextTask();
+    try {
+      while (this.hasTask) {
+        await this.runNextTask();
+      }
+    } finally {
+      this.isRunning = false;
     }
-
-    this.isRunning = false;
   }
 
   private get hasTask() {
