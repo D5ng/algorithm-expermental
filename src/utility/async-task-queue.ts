@@ -27,18 +27,13 @@ export class AsyncTaskQueue<Task extends AsyncTask = AsyncTask> {
   async queue(task: Task) {
     // Add an async task to the queue
     // 현재 실행중인 작업 개수가 최대 동시 작업 수보다 같거나 크면 무시
-    if (this.runningTaskCount >= this.concurrency) {
+    if (this.hasReachedConcurrencyLimit()) {
       this.pendingQueue.push(task);
       return;
     }
 
     // 현재 실행중인 작업의 개수를 증가
     this.runningTaskCount += 1;
-
-    // queue.queue(task1) 실행
-    // queue.queue(task2) 실행
-    // queue.queue(task3) 실행 (작업 대기열 추가)
-    // task1 작업 완료 시점에서 대기열에 있는것들을 꺼내서 사용해야함
 
     // task가 동기적인 상황에서의 예외처리
     try {
@@ -50,16 +45,24 @@ export class AsyncTaskQueue<Task extends AsyncTask = AsyncTask> {
       this.runningTaskCount -= 1;
 
       // 가장 오래된 함수(작업) 가져오기
-      const task = this.pendingQueue.shift();
+      const nextTask = this.pendingQueue.shift();
 
       // 가장 오래된 작업이 없다면 종료
-      if (task === undefined) {
+      if (nextTask === undefined) {
         return;
       }
 
       // 가장 오래된 함수가 있다면 똑같은 방법으로 반복
-      this.queue(task);
+      this.queue(nextTask);
     }
+  }
+
+  /**
+   * 현재 실행중인 작업 개수가 최대 동시 작업 수보다 같은지 판별
+   * @returns boolean
+   */
+  private hasReachedConcurrencyLimit() {
+    return this.runningTaskCount >= this.concurrency;
   }
 }
 
