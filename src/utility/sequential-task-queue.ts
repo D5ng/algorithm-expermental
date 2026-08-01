@@ -60,7 +60,7 @@ export class SequentialTaskQueue<Task extends AsyncTask = AsyncTask> {
   }
 
   private get hasTask() {
-    return this.queue.length > 0;
+    return this.size > 0;
   }
 
   // 각 작업을 처리하는 함수
