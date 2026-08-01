@@ -141,23 +141,26 @@ export class SequentialTaskQueue<Task extends AsyncTask = AsyncTask> {
 
     this.isRunning = true;
 
-    while (this.hasTaskQueue) {
-      const nextTask = this.queue.shift();
-
-      if (nextTask === undefined) {
-        break;
-      }
-
-      try {
-        await nextTask();
-      } catch {
-        /** 실패했을 때 처리 */
-      }
+    while (this.hasTask) {
+      await this.runNextTask();
     }
+
     this.isRunning = false;
   }
 
-  private get hasTaskQueue() {
+  private get hasTask() {
     return this.queue.length > 0;
+  }
+
+  // 각 작업을 처리하는 함수
+  private async runNextTask() {
+    // 가장 오래된 작업 꺼내기
+    const nextTask = this.queue.shift();
+
+    try {
+      await nextTask();
+    } catch {
+      /** 실패했을 때 처리 */
+    }
   }
 }
