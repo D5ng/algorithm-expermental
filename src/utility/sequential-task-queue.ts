@@ -71,7 +71,7 @@ export class SequentialTaskQueue<Task extends AsyncTask = AsyncTask> {
     try {
       await nextTask();
     } catch {
-      /** 실패했을 때 처리 */
+      /* NOTE: 요구사항에서는 실패해도 다음 작업을 이어가도록 함 */
     }
   }
 }
