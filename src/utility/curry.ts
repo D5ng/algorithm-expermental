@@ -22,10 +22,10 @@ export function curry(fn: CurriedFunction) {
    * 인수가 부족하면 함수를 반환하고, 인수가 다 차면 값을 반환한다
    */
   return function curried(...args: any[]) {
-    // 전달받은 인수가 매개변수의 개수를 초과한다면
+    // 함수에 전달할 매개변수만 남기기
     const appliedArgs = args.slice(0, fn.length);
 
-    // 전달받은 인수가 함수의 매개변수 개수보다 크거나 같다면
+    // 전달받은 인수가 함수의 매개변수 개수와 같을 때
     if (appliedArgs.length === fn.length) {
       return fn(...appliedArgs);
     }
