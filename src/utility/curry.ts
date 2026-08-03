@@ -22,14 +22,17 @@ export function curry(fn: CurriedFunction) {
    * 인수가 부족하면 함수를 반환하고, 인수가 다 차면 값을 반환한다
    */
   return function curried(...args: any[]) {
+    // 전달받은 인수가 매개변수의 개수를 초과한다면
+    const appliedArgs = [...args].slice(0, fn.length);
+
     // 전달받은 인수가 함수의 매개변수 개수보다 크거나 같다면
-    if (args.length === fn.length) {
+    if (appliedArgs.length === fn.length) {
       return fn(...args);
     }
 
     // 인수가 부족하면, 다음 인수를 더 받기 위한 함수를 반환
     return (...nextArgs: any[]) => {
-      return curried.call(this, ...args, ...nextArgs);
+      return curried.call(this, ...appliedArgs, ...nextArgs);
     };
   };
 }
