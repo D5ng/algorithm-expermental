@@ -25,7 +25,7 @@ export function flatten(arr: any[], depth = 1) {
   const flattened = [];
 
   for (const element of arr) {
-    if (Array.isArray(element) && depth > 0) {
+    if (canFlatten(element, depth)) {
       flattened.push(...flatten(element, depth - 1));
     } else {
       flattened.push(element);
@@ -33,6 +33,11 @@ export function flatten(arr: any[], depth = 1) {
   }
 
   return flattened;
+}
+
+// 평탄화 가능한지 판별하는 함수
+function canFlatten(value: any[], depth: number) {
+  return Array.isArray(value) && depth > 0;
 }
 
 /**
