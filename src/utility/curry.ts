@@ -23,7 +23,7 @@ export function curry(fn: CurriedFunction) {
    */
   return function curried(...args: any[]) {
     // 전달받은 인수가 매개변수의 개수를 초과한다면
-    const appliedArgs = [...args].slice(0, fn.length);
+    const appliedArgs = args.slice(0, fn.length);
 
     // 전달받은 인수가 함수의 매개변수 개수보다 크거나 같다면
     if (appliedArgs.length === fn.length) {
