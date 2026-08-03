@@ -27,7 +27,7 @@ export function curry(fn: CurriedFunction) {
 
     // 전달받은 인수가 함수의 매개변수 개수보다 크거나 같다면
     if (appliedArgs.length === fn.length) {
-      return fn(...args);
+      return fn(...appliedArgs);
     }
 
     // 인수가 부족하면, 다음 인수를 더 받기 위한 함수를 반환
