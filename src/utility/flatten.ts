@@ -35,8 +35,13 @@ export function flatten(arr: any[], depth = 1) {
   return flattened;
 }
 
-// 평탄화 가능한지 판별하는 함수
-function canFlatten(value: any[], depth: number) {
+/**
+ * 평탄화 가능 여부를 판별하는 함수
+ * @param value 평탄화할 값
+ * @param depth 평탄화할 깊이
+ * @returns boolean
+ */
+function canFlatten(value: any, depth: number) {
   return Array.isArray(value) && depth > 0;
 }
 
