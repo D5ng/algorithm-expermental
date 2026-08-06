@@ -26,3 +26,34 @@
  * 조건을 만족하는 수는 최대 10번의 탐색 안에 찾을 수 있으므로,
  * `n`부터 수를 하나씩 확인하는 완전 탐색을 사용할 수 있다.
  */
+
+export function smallestNumber(n: number, t: number) {
+  for (let i = n; i <= 100; i++) {
+    const calculatedDigitProduct = String(i)
+      .split("")
+      .map((value) => Number(value))
+      .reduce((product, digit) => product * digit, 1);
+
+    if (calculatedDigitProduct % t === 0) {
+      return i;
+    }
+  }
+}
+
+/**
+ * 목적:
+ * 각 자릿수의 곱이 t로 나누어 떨어진 가장 작은 수 반환
+ *
+ * 입력:
+ * n: 정수 값
+ * t: 나눌 값
+ *
+ * 처리:
+ * 각 자릿수마다 곱하기
+ * t로 나누어 떨어지는지 판별
+ * 나누어떨어지지 않을 경우 n을 1씩 증가하고, 반복
+ * 나누어떨어진다면 n을 반환
+ *
+ * 출력:
+ * 각 자릿수의 곱이 t로 나누어 떨어진 가장 작은 값
+ */
