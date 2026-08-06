@@ -28,14 +28,14 @@
  */
 
 export function smallestNumber(n: number, t: number) {
-  for (let i = n; i <= 100; i++) {
-    const calculatedDigitProduct = String(i)
+  for (let candidate = n; candidate <= 100; candidate++) {
+    const calculatedDigitProduct = String(candidate)
       .split("")
       .map((value) => Number(value))
       .reduce((product, digit) => product * digit, 1);
 
     if (calculatedDigitProduct % t === 0) {
-      return i;
+      return candidate;
     }
   }
 }
