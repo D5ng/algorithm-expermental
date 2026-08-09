@@ -40,20 +40,16 @@
  */
 
 export function twoSum(nums: number[], target: number): number[] {
-  const obj: Record<number, number> = Object.fromEntries(
-    nums.map((value, index) => [value, index]),
-  );
+  const map = new Map(nums.map((value, index) => [value, index]));
 
   for (const [index, value] of nums.entries()) {
     const diffValue = target - value;
 
-    const matchedIndex = obj[diffValue];
+    const matchedIndex = map.get(diffValue);
 
-    if (matchedIndex === undefined || matchedIndex === index) {
-      continue;
+    if (matchedIndex !== undefined && index !== matchedIndex) {
+      return [index, matchedIndex];
     }
-
-    return [index, matchedIndex];
   }
 }
 
