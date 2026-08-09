@@ -1,3 +1,9 @@
 node_modules
 
 src/index.ts
+
+# AI 에이전트 설정
+AGENTS.md
+CLAUDE.md
+.claude/
+.DS_Store
