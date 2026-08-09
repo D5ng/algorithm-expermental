@@ -39,15 +39,15 @@
  * 해시 맵을 사용해 필요한 값의 인덱스를 빠르게 찾을 수 있다.
  */
 
-export function twoSum(nums: number[], target: number): number[] {
+export function twoSum(nums: number[], target: number): number[] | undefined {
   const map = new Map(nums.map((value, index) => [value, index]));
 
   for (const [index, value] of nums.entries()) {
     const diffValue = target - value;
-
     const matchedIndex = map.get(diffValue);
 
-    if (matchedIndex !== undefined && index !== matchedIndex) {
+    const hasValidMatch = matchedIndex !== undefined && index !== matchedIndex;
+    if (hasValidMatch) {
       return [index, matchedIndex];
     }
   }
@@ -68,9 +68,14 @@ export function twoSum(nums: number[], target: number): number[] {
  *  있다면 순회중인 index와 차이 값이 존재하는 배열의 index를 반환
  *
  * 2. 성능 최적화 (hash map)
- * 최적화 전에는 배열의 개수가 늘어날수록 시간복잡도가 O(n2)이기 때문에, 객체 또는 Map을 사용하여 O(1) 형태로 개선 할 수 있음
+ * 최적화 전에는 중첩 for문으로 시간복잡도가 O(n2)이기 때문에, 객체 또는 Map을 사용하여 O(n) 형태로 개선 할 수 있음
  * key의 값을 value로 두어 조회 시 O(1)로 가능하도록 구현
  *
  * 출력:
  * 목표 값에 해당하는 인덱스 배열
+ *
+ * 예외 케이스
+ * - 합이 target이 되는 두 요소의 인덱스를 반환
+ * - 값이 같더라도 서로 다른 위치의 인덱스를 반환
+ * - 음수가 포함된 배열에서도 올바른 인덱스를 반환
  */
