@@ -5,7 +5,12 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "tsx --watch ./src/index.ts",
-		"test": "vitest"
+		"test": "vitest",
+		"test:run": "vitest run",
+		"typecheck": "tsc --noEmit",
+		"lint": "biome check ./src",
+		"format": "biome check --write ./src",
+		"verify": "pnpm typecheck && pnpm lint && pnpm test:run"
 	},
 	"keywords": [],
 	"author": "",
