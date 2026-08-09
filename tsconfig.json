@@ -4,6 +4,9 @@
 		"module": "NodeNext",
 		"moduleResolution": "nodenext",
 		"types": ["vitest"],
-		"baseUrl": "."
+		"baseUrl": ".",
+		"strict": true,
+		"strictNullChecks": true,
+		"noImplicitAny": false
 	}
 }
