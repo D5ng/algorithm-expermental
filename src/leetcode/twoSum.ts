@@ -40,22 +40,20 @@
  */
 
 export function twoSum(nums: number[], target: number): number[] {
-  const obj: Record<string, number> = {};
+  const obj: Record<number, number> = Object.fromEntries(
+    nums.map((value, index) => [value, index]),
+  );
 
-  for (let i = 0; i < nums.length; i++) {
-    obj[nums[i]] = i;
-  }
-
-  for (let i = 0; i < nums.length; i++) {
-    const diffValue = target - nums[i];
+  for (const [index, value] of nums.entries()) {
+    const diffValue = target - value;
 
     const matchedIndex = obj[diffValue];
 
-    if (matchedIndex === undefined || matchedIndex === i) {
+    if (matchedIndex === undefined || matchedIndex === index) {
       continue;
     }
 
-    return [i, matchedIndex];
+    return [index, matchedIndex];
   }
 }
 
@@ -75,6 +73,7 @@ export function twoSum(nums: number[], target: number): number[] {
  *
  * 2. 성능 최적화 (hash map)
  * 최적화 전에는 배열의 개수가 늘어날수록 시간복잡도가 O(n2)이기 때문에, 객체 또는 Map을 사용하여 O(1) 형태로 개선 할 수 있음
+ * key의 값을 value로 두어 조회 시 O(1)로 가능하도록 구현
  *
  * 출력:
  * 목표 값에 해당하는 인덱스 배열
