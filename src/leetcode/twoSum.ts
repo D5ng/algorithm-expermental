@@ -40,17 +40,22 @@
  */
 
 export function twoSum(nums: number[], target: number): number[] {
+  const obj: Record<string, number> = {};
+
   for (let i = 0; i < nums.length; i++) {
-    const value = nums[i];
-    const diffValue = target - value;
+    obj[nums[i]] = i;
+  }
 
-    const matchedIndex = nums.findIndex(
-      (value, index) => value === diffValue && index !== i,
-    );
+  for (let i = 0; i < nums.length; i++) {
+    const diffValue = target - nums[i];
 
-    if (matchedIndex !== -1) {
-      return [i, matchedIndex];
+    const matchedIndex = obj[diffValue];
+
+    if (matchedIndex === undefined || matchedIndex === i) {
+      continue;
     }
+
+    return [i, matchedIndex];
   }
 }
 
@@ -63,10 +68,13 @@ export function twoSum(nums: number[], target: number): number[] {
  * `target` 목표 값
  *
  * 처리:
- * 배열 순회
- * 원소와 target의 차이를 구한다
- * 차이 값이 배열에 있는지 판별
- * 있다면 순회중인 index와 차이 값이 존재하는 배열의 index를 반환
+ * 1. 배열 순회
+ *  원소와 target의 차이를 구한다
+ *  차이 값이 배열에 있는지 판별
+ *  있다면 순회중인 index와 차이 값이 존재하는 배열의 index를 반환
+ *
+ * 2. 성능 최적화 (hash map)
+ * 최적화 전에는 배열의 개수가 늘어날수록 시간복잡도가 O(n2)이기 때문에, 객체 또는 Map을 사용하여 O(1) 형태로 개선 할 수 있음
  *
  * 출력:
  * 목표 값에 해당하는 인덱스 배열
