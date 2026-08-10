@@ -42,24 +42,43 @@ export function isPalindrome(x: number): boolean {
     return false;
   }
 
-  const reverseChar = Number(String(x).split("").reverse().join(""));
-  return reverseChar === x;
+  if (x < 10) {
+    return true;
+  }
+
+  const digits = String(x);
+
+  let result = false;
+
+  for (let i = 0; i < digits.length; i++) {
+    const left = i;
+    const right = digits.length - 1 - i;
+
+    if (digits[left] !== digits[right]) {
+      return false;
+    }
+
+    result = true;
+  }
+
+  return result;
 }
 
 /**
  * 목적:
+ * 주어진 숫자를 뒤집었을 때, 원래의 값과 같은지 판별하는 함수 구현 (팰린드롬)
  *
  * 입력:
+ * `-2^31 <= x <= 2^31 - 1`
+ * 음수~양수
  *
  * 처리:
- * 가장 간단한 방법:
- * 문자열로 변환하여 `reverse` 사용
- *
- * 숫자에 맨 앞, 뒤를 비교하는 방식
- *
+ * 문자열로 변환하여 앞, 뒤를 비교한다
  *
  * 출력:
+ * boolean
  *
  * 예외 케이스:
- * - 음수인 경우 "-" 기호로 인한 false
+ * - 음수인 경우 "-" 부호가 붙기 때문에 false 처리
+ * - 일의 자리수는 뒤집어도 결과가 같다
  */
