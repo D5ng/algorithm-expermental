@@ -48,8 +48,6 @@ export function isPalindrome(x: number): boolean {
 
   const digits = String(x);
 
-  let result = false;
-
   for (let i = 0; i < digits.length; i++) {
     const left = i;
     const right = digits.length - 1 - i;
@@ -57,11 +55,9 @@ export function isPalindrome(x: number): boolean {
     if (digits[left] !== digits[right]) {
       return false;
     }
-
-    result = true;
   }
 
-  return result;
+  return true;
 }
 
 /**
@@ -73,7 +69,7 @@ export function isPalindrome(x: number): boolean {
  * 음수~양수
  *
  * 처리:
- * 문자열로 변환하여 앞, 뒤를 비교한다
+ * 정수를 문자열로 변환하지 않고 어떻게 해결할 수 있을까?
  *
  * 출력:
  * boolean
