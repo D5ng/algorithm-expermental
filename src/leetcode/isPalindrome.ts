@@ -46,18 +46,18 @@ export function isPalindrome(x: number): boolean {
     return true;
   }
 
-  const digits = String(x);
+  let digits = x;
+  let acc = 0;
+  let remainingNumber = 0;
 
-  for (let i = 0; i < digits.length; i++) {
-    const left = i;
-    const right = digits.length - 1 - i;
+  while (digits) {
+    remainingNumber = digits % 10;
+    acc = (acc + remainingNumber) * 10;
 
-    if (digits[left] !== digits[right]) {
-      return false;
-    }
+    digits = Math.floor(digits / 10);
   }
 
-  return true;
+  return Math.floor(acc / 10) === x;
 }
 
 /**
@@ -69,7 +69,31 @@ export function isPalindrome(x: number): boolean {
  * 음수~양수
  *
  * 처리:
- * 정수를 문자열로 변환하지 않고 어떻게 해결할 수 있을까?
+ * 정수를 문자열로 변환하지 않고 어떻게 할 수 있을까?
+ * 만약 값이 1231 이라면?
+ * 맨 뒷자리를 가져와야함, 음.. 이건 % 10으로 해결될 것 같아
+ * 1231 % 10 => 1
+ * 123 % 10 => 3
+ * 12 % 10 => 2
+ * 1 % 10 => 1
+ *
+ * 일단 while문으로 처리하고, 원본 정수를 변수에 담아서 처리
+ * 1, 3, 2, 1 나머지 값을 어떻게 이어붙일 수 있을까?
+ * (AI 힌트)
+ * 1 * 10 = 10
+ * 10 + 3 = 13
+ * 13 * 10 = 130
+ * 130 + 2 = 132
+ * 132 * 10 = 1320
+ * 1320 + 1 = 1321
+ * ---
+ * (1 + 0) * 10 = 10
+ * (10 + 3) * 10 = 130
+ * (130 + 2) * 10 = 1320
+ * (1320 + 1) * 10 = 13210
+ * (누적값 + 나머지값) * 10
+ *
+ * 마지막에는 / 10을 나눈 값을 원본 x와 비교
  *
  * 출력:
  * boolean
