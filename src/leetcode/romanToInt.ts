@@ -63,12 +63,12 @@ const romanMap = {
 };
 
 // 현재 값과 다음 값을 기준으로 문제 풀이
-export function romanToInt(s: string): number {
+export function romanToInt(roman: string): number {
   let result = 0;
 
-  for (let index = 0; index < s.length; index++) {
-    const currentNumber = romanMap[s[index]];
-    const nextRomanNumber = s[index + 1];
+  for (let index = 0; index < roman.length; index++) {
+    const currentNumber = romanMap[roman[index]];
+    const nextRomanNumber = roman[index + 1];
     let nextNumber = 0;
 
     if (nextRomanNumber !== undefined) {
@@ -87,12 +87,12 @@ export function romanToInt(s: string): number {
 }
 
 // 현재 값과 이전 값을 기준으로 문제 풀이
-export function romanToInt2(s: string): number {
+export function romanToInt2(roman: string): number {
   let result = 0;
   let prevNumber = 0;
 
-  for (let index = 0; index < s.length; index++) {
-    const currentNumber = romanMap[s[index]];
+  for (let index = 0; index < roman.length; index++) {
+    const currentNumber = romanMap[roman[index]];
 
     if (currentNumber > prevNumber) {
       result += currentNumber - prevNumber * 2;
