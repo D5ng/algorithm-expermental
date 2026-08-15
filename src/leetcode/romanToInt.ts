@@ -67,7 +67,7 @@ export function romanToInt(roman: string): number {
   let result = 0;
 
   for (let index = 0; index < roman.length; index++) {
-    const currentNumber = romanMap[roman[index]];
+    const currentValue = romanMap[roman[index]];
     const nextRomanNumber = roman[index + 1];
     let nextNumber = 0;
 
@@ -75,10 +75,10 @@ export function romanToInt(roman: string): number {
       nextNumber = romanMap[nextRomanNumber];
     }
 
-    if (currentNumber >= nextNumber) {
-      result += currentNumber;
+    if (currentValue >= nextNumber) {
+      result += currentValue;
     } else {
-      result += nextNumber - currentNumber;
+      result += nextNumber - currentValue;
       index += 1;
     }
   }
@@ -92,15 +92,15 @@ export function romanToInt2(roman: string): number {
   let prevNumber = 0;
 
   for (let index = 0; index < roman.length; index++) {
-    const currentNumber = romanMap[roman[index]];
+    const currentValue = romanMap[roman[index]];
 
-    if (currentNumber > prevNumber) {
-      result += currentNumber - prevNumber * 2;
+    if (currentValue > prevNumber) {
+      result += currentValue - prevNumber * 2;
     } else {
-      result += currentNumber;
+      result += currentValue;
     }
 
-    prevNumber = currentNumber;
+    prevNumber = currentValue;
   }
 
   return result;
