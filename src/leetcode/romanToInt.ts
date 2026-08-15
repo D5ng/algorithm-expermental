@@ -62,6 +62,7 @@ const romanMap = {
   M: 1000,
 };
 
+// 현재 값과 다음 값을 기준으로 문제 풀이
 export function romanToInt(s: string): number {
   let result = 0;
 
@@ -80,6 +81,26 @@ export function romanToInt(s: string): number {
       result += nextNumber - currentNumber;
       index += 1;
     }
+  }
+
+  return result;
+}
+
+// 현재 값과 이전 값을 기준으로 문제 풀이
+export function romanToInt2(s: string): number {
+  let result = 0;
+  let prevNumber = 0;
+
+  for (let index = 0; index < s.length; index++) {
+    const currentNumber = romanMap[s[index]];
+
+    if (currentNumber > prevNumber) {
+      result += currentNumber - prevNumber * 2;
+    } else {
+      result += currentNumber;
+    }
+
+    prevNumber = currentNumber;
   }
 
   return result;
@@ -108,4 +129,16 @@ export function romanToInt(s: string): number {
  * index: 1,2 현재 값: 100, 다음 값: 1000, 100 < 1000 -> 빼기, 누적 값: 1900
  * index: 3,4 현재 값: 10, 다음 값: 100, 10 < 100 -> 빼기, 누적 값: 1990
  * index: 5,6 현재 값: 1, 다음 값: 5, 1 < 5 -> 빼기, 누적 값: 1994
+ *
+ * [MCMXCIV] 현재와 이전기준으로
+ * - 현재 값이 이전 값보다 크다면 빼야한다
+ * - 현재 값이 이전 값보다 작거나 같다면 더해야한다
+ *
+ * index: 0, 현재 값: 1000, 이전 값: 0, 1000 > 0 -> 빼기, 누적 값: 1000
+ * index: 1, 현재 값: 100, 이전 값: 1000, 100 <= 1000 -> 더하기, 누적 값: 1100
+ * index: 2, 현재 값: 1000, 이전 값: 100, 1000 > 100 -> 빼기, 누적 값: 1100 + (1000 - 100 * 2) = 1900
+ * index: 3, 현재 값: 10, 이전 값: 1000, 10 <= 1000  -> 더하기, 누적 값: 1900 + 10 = 1910
+ * index: 4, 현재 값: 100, 이전 값: 10, 100 > 10 -> 빼기, 누적 값: 1910 + (100 - 10 * 2) = 1990
+ * index: 5, 현재 값: 1, 이전 값: 100, 1 < = 100 -> 더하기, 누적 값: 1990 + 1
+ * index; 6, 현재 값: 5, 이전 값: 1, 5 > 1 -> 빼기, 누적 값: 1991 + (5 - 1 * 2) = 1993
  */
