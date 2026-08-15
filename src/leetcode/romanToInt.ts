@@ -69,16 +69,16 @@ export function romanToInt(roman: string): number {
   for (let index = 0; index < roman.length; index++) {
     const currentValue = romanMap[roman[index]];
     const nextRomanNumber = roman[index + 1];
-    let nextNumber = 0;
+    let nextValue = 0;
 
     if (nextRomanNumber !== undefined) {
-      nextNumber = romanMap[nextRomanNumber];
+      nextValue = romanMap[nextRomanNumber];
     }
 
-    if (currentValue >= nextNumber) {
+    if (currentValue >= nextValue) {
       result += currentValue;
     } else {
-      result += nextNumber - currentValue;
+      result += nextValue - currentValue;
       index += 1;
     }
   }
