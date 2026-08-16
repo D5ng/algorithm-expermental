@@ -67,18 +67,14 @@ export function romanToInt(roman: string): number {
   let result = 0;
 
   for (let index = 0; index < roman.length; index++) {
-    const currentValue = romanMap[roman[index]];
-    const nextRomanChar = roman[index + 1];
-    let nextValue = 0;
+    const currentValue = getRomanValue(roman[index]);
+    const nextValue = getRomanValue(roman[index + 1]);
 
-    if (nextRomanChar !== undefined) {
-      nextValue = romanMap[nextRomanChar];
-    }
+    const { value, consumedNext } = resolvePairValue(currentValue, nextValue);
 
-    if (currentValue >= nextValue) {
-      result += currentValue;
-    } else {
-      result += nextValue - currentValue;
+    result += value;
+
+    if (consumedNext) {
       index += 1;
     }
   }
@@ -86,21 +82,42 @@ export function romanToInt(roman: string): number {
   return result;
 }
 
+function getRomanValue(char: string | undefined): number {
+  return char === undefined ? 0 : romanMap[char];
+}
+
+function resolvePairValue(
+  currentValue: number,
+  nextValue: number,
+): { value: number; consumedNext: boolean } {
+  let value = 0;
+  let consumedNext = false;
+
+  if (currentValue >= nextValue) {
+    value = currentValue;
+  } else {
+    value = nextValue - currentValue;
+    consumedNext = true;
+  }
+
+  return { value, consumedNext };
+}
+
 // 현재 값과 이전 값을 기준으로 문제 풀이
 export function romanToInt2(roman: string): number {
   let result = 0;
-  let prevNumber = 0;
+  let prevValue = 0;
 
   for (let index = 0; index < roman.length; index++) {
-    const currentValue = romanMap[roman[index]];
+    const currentValue = getRomanValue(roman[index]);
 
-    if (currentValue > prevNumber) {
-      result += currentValue - prevNumber * 2;
+    if (currentValue > prevValue) {
+      result += currentValue - prevValue * 2;
     } else {
       result += currentValue;
     }
 
-    prevNumber = currentValue;
+    prevValue = currentValue;
   }
 
   return result;
