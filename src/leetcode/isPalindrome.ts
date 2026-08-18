@@ -48,11 +48,11 @@ export function isPalindrome(x: number): boolean {
 
   let digits = x;
   let acc = 0;
-  let remainingNumber = 0;
+  let remaningValue = 0;
 
   while (digits) {
-    remainingNumber = digits % 10;
-    acc = (acc + remainingNumber) * 10;
+    remaningValue = digits % 10;
+    acc = (acc + remaningValue) * 10;
 
     digits = Math.floor(digits / 10);
   }
