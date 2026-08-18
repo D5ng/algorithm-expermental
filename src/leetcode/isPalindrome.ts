@@ -46,18 +46,22 @@ export function isPalindrome(x: number): boolean {
     return true;
   }
 
-  let digits = x;
-  let acc = 0;
-  let remaningValue = 0;
+  return reverseInteger(x) === x;
+}
 
-  while (digits) {
-    remaningValue = digits % 10;
-    acc = (acc + remaningValue) * 10;
+// 정수를 뒤집는 역할
+function reverseInteger(value: number): number {
+  let remainingValue = value;
+  let reversedValue = 0;
 
-    digits = Math.floor(digits / 10);
+  while (remainingValue > 0) {
+    const remainder = remainingValue % 10;
+
+    reversedValue = reversedValue * 10 + remainder;
+    remainingValue = Math.floor(remainingValue / 10);
   }
 
-  return Math.floor(acc / 10) === x;
+  return reversedValue;
 }
 
 /**
