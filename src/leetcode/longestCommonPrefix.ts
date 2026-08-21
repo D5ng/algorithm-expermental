@@ -73,12 +73,21 @@ export function longestCommonPrefix(strs: string[]): string {
  * index = 1, position = 1 => l
  * index = 2, position = 1 => l
  *
- * index = 0, position = 2 => l
- * index = 1, position = 2 => l
- * index = 2, position = 2 => o
+ * index = 0, position = 2 => o
+ * index = 1, position = 2 => o
+ * index = 2, position = 2 => i
  *
- * 시작부터 값이 같아야하는데 같지 않은 경우에는 문자열 자르기
+ * 처리:
+ * 기준으로 삼을 문자열 strs[0][charIndex]
+ * 기준 문자열이 다른 문자열의 인덱스와 같은지 판별
+ * 시작부터 값이 같아야하는데 같지 않은 경우에는 문자열 자르고 return
+ * 모든 문자열이 같다면 조건식에 만족하지 않기에 strs[0]을 return
  *
+ * 복잡도:
+ * n: 배열의 길이
+ * m: 문자열의 길이
+ * 시간 복잡도: O(n*m)
+ * 공간 복잡도: O(m)
  *
  * 엣지 케이스:
  * - 빈 문자열이 배열에 하나라도 있다면 공통 접두사는 ""으로 처리한다
