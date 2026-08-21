@@ -33,8 +33,6 @@
  */
 
 export function longestCommonPrefix(strs: string[]): string {
-  const result = strs[0];
-
   for (let position = 0; position < strs[0].length; position++) {
     const baseChar = strs[0][position];
 
@@ -45,7 +43,7 @@ export function longestCommonPrefix(strs: string[]): string {
     }
   }
 
-  return result;
+  return strs[0];
 }
 
 /**
