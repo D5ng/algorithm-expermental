@@ -33,12 +33,12 @@
  */
 
 export function longestCommonPrefix(strs: string[]): string {
-  for (let position = 0; position < strs[0].length; position++) {
-    const baseChar = strs[0][position];
+  for (let charIndex = 0; charIndex < strs[0].length; charIndex++) {
+    const baseChar = strs[0][charIndex];
 
-    for (let index = 0; index < strs.length; index++) {
-      if (baseChar !== strs[index][position]) {
-        return strs[0].slice(0, position);
+    for (let strIndex = 0; strIndex < strs.length; strIndex++) {
+      if (baseChar !== strs[strIndex][charIndex]) {
+        return strs[0].slice(0, charIndex);
       }
     }
   }
