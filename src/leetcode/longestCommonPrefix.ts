@@ -33,17 +33,19 @@
  */
 
 export function longestCommonPrefix(strs: string[]): string {
+  const result = strs[0];
+
   for (let position = 0; position < strs[0].length; position++) {
-    const character = strs[0][position];
+    const baseChar = strs[0][position];
 
     for (let index = 0; index < strs.length; index++) {
-      if (character !== strs[index][position]) {
+      if (baseChar !== strs[index][position]) {
         return strs[0].slice(0, position);
       }
     }
   }
 
-  return strs[0];
+  return result;
 }
 
 /**
@@ -59,30 +61,29 @@ export function longestCommonPrefix(strs: string[]): string {
  * 공통 접두사 문자열
  *
  * 흐름:
+ * 처음 문자열의 인덱스와 strs 배열의 인덱스로 구하면 어떨까?
  * [flower, flow, flight] 기준
- * flower
- * flow
- * flight
+ * f l o w e r
+ * f l o w
+ * f l i g h t
  *
- * 세로를 기준으로 공통된 접두사를 찾으면 어떨까?
- * fff, lll, ooi
- * 문자열의 길이와 현재 문자열 배열의 길이만큼 반복
- * flower (문자열의 길이)
- * [flower, flow, flight] 문자열 배열의 길이 3
- * position = 0, index = 0 => f
- * position = 0, index = 1 => f
- * position = 0, index = 2 => f
+ * index = 0, position = 0 => f
+ * index = 1, position = 0 => f
+ * index = 2, position = 0 => f
  *
- * position = 1, index = 0 => l
- * position = 1, index = 1 => l
- * position = 1, index = 2 => l
+ * index = 0, position = 1 => l
+ * index = 1, position = 1 => l
+ * index = 2, position = 1 => l
  *
- * position = 2, index = 0 => o
- * position = 2, index = 1 => o
- * position = 2, index = 2 => l
- * 같지않을 때 문자열의 길이를 잘라야함. 왜?
- * 같을 때를 기준으로하면 "flo"까지 포함돼
+ * index = 0, position = 2 => l
+ * index = 1, position = 2 => l
+ * index = 2, position = 2 => o
+ *
+ * 시작부터 값이 같아야하는데 같지 않은 경우에는 문자열 자르기
+ *
  *
  * 엣지 케이스:
  * - 빈 문자열이 배열에 하나라도 있다면 공통 접두사는 ""으로 처리한다
+ * - 모든 문자열이 같다면 그 중 하나를 반환한다
+ * - 배열의 길이가 1일 때 문자열 그대로 반환한다
  */
