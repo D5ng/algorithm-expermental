@@ -38,12 +38,38 @@ export function longestCommonPrefix(strs: string[]): string {
 
     for (let strIndex = 0; strIndex < strs.length; strIndex++) {
       if (baseChar !== strs[strIndex][charIndex]) {
-        return strs[0].slice(0, charIndex);
+        return strs[strIndex].slice(0, charIndex);
       }
     }
   }
 
   return strs[0];
+}
+
+/* 문자열을 이어붙이는 방식 */
+export function longestCommonPrefix2(strs: string[]): string {
+  let commonPrefix = "";
+  let matched = "";
+
+  for (let charIndex = 0; charIndex < strs[0].length; charIndex++) {
+    const baseChar = strs[0][charIndex];
+
+    for (let strIndex = 0; strIndex < strs.length; strIndex++) {
+      if (baseChar === strs[strIndex][charIndex]) {
+        matched += baseChar;
+      }
+    }
+
+    if (baseChar.repeat(strs.length) === matched) {
+      commonPrefix += baseChar;
+    } else {
+      return commonPrefix;
+    }
+
+    matched = "";
+  }
+
+  return commonPrefix;
 }
 
 /**
