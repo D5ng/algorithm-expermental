@@ -72,6 +72,32 @@ export function longestCommonPrefix2(strs: string[]): string {
   return commonPrefix;
 }
 
+/* 배열을 하나하나 비교하는 방식 */
+export function longestCommonPrefix3(strs: string[]): string {
+  let currentIndex = 0;
+  let matched = strs[0];
+  let commonPrefix = "";
+
+  if (strs.length === 1) {
+    return strs[0];
+  }
+
+  while (currentIndex < strs.length - 1) {
+    commonPrefix = "";
+
+    for (let charIndex = 0; charIndex < matched.length; charIndex++) {
+      if (matched[charIndex] === strs[currentIndex + 1][charIndex]) {
+        commonPrefix += matched[charIndex];
+      }
+    }
+
+    matched = commonPrefix;
+    currentIndex++;
+  }
+
+  return commonPrefix;
+}
+
 /**
  * 목적:
  * 가장 긴 공통 접두사를 출력한다
