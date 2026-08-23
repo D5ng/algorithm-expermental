@@ -40,21 +40,20 @@ export class AsyncTaskQueue<Task extends AsyncTask = AsyncTask> {
       await task();
     } catch (error) {
       /** 에러 발생 */
-    } finally {
-      // 작업이 끝났다면 현재 실행 중인 작업 감소
-      this.runningTaskCount -= 1;
-
-      // 가장 오래된 함수(작업) 가져오기
-      const nextTask = this.pendingQueue.shift();
-
-      // 가장 오래된 작업이 없다면 종료
-      if (nextTask === undefined) {
-        return;
-      }
-
-      // 가장 오래된 함수가 있다면 똑같은 방법으로 반복
-      this.queue(nextTask);
     }
+
+    // 작업이 끝났다면 현재 실행 중인 작업 감소
+    this.runningTaskCount -= 1;
+
+    // 가장 오래된 함수(작업) 가져오기
+    const nextTask = this.pendingQueue.shift();
+
+    // 가장 오래된 작업이 없다면 종료
+    if (nextTask === undefined) {
+      return;
+    }
+
+    this.queue(nextTask);
   }
 
   /**
