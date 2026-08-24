@@ -28,26 +28,26 @@
  */
 
 export function smallestNumber(n: number, t: number) {
-  for (let candidate = n; candidate <= 100; candidate++) {
-    const digitProduct = calculateDigitProduct(candidate);
+	for (let candidate = n; candidate <= 100; candidate++) {
+		const digitProduct = calculateDigitProduct(candidate)
 
-    if (isValidCandidate(digitProduct, t)) {
-      return candidate;
-    }
-  }
+		if (isValidCandidate(digitProduct, t)) {
+			return candidate
+		}
+	}
 }
 
 /* 각 자릿수를 곱하는 함수 */
 function calculateDigitProduct(candidate: number) {
-  return String(candidate)
-    .split("")
-    .map((value) => Number(value))
-    .reduce((product, digit) => product * digit, 1);
+	return String(candidate)
+		.split("")
+		.map((value) => Number(value))
+		.reduce((product, digit) => product * digit, 1)
 }
 
 /* 조건을 만족하는지 판별하는 함수 */
 function isValidCandidate(digitProduct: number, t: number) {
-  return digitProduct % t === 0;
+	return digitProduct % t === 0
 }
 
 /**

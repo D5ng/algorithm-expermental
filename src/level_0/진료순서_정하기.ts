@@ -16,21 +16,21 @@
  */
 
 export function 진료순서_정하기(emergency: number[]) {
-	const sorted = [...emergency].sort((a, b) => b - a);
+	const sorted = [...emergency].sort((a, b) => b - a)
 
 	const rank: Record<number, number> = sorted.reduce((acc, cur, index) => {
-		const key = cur;
-		const value = index + 1;
+		const key = cur
+		const value = index + 1
 
-		acc[key] = value;
-		return acc;
-	}, {});
+		acc[key] = value
+		return acc
+	}, {})
 
-	const findRanking = (value: number) => rank[value];
+	const findRanking = (value: number) => rank[value]
 
-	return emergency.map(findRanking);
+	return emergency.map(findRanking)
 }
 
-console.log(진료순서_정하기([3, 76, 24]));
-console.log(진료순서_정하기([1, 2, 3, 4, 5, 6, 7]));
-console.log(진료순서_정하기([30, 10, 23, 6, 100]));
+console.log(진료순서_정하기([3, 76, 24]))
+console.log(진료순서_정하기([1, 2, 3, 4, 5, 6, 7]))
+console.log(진료순서_정하기([30, 10, 23, 6, 100]))

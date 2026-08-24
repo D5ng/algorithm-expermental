@@ -17,16 +17,16 @@
 // 주어진 입력값 n에서 팩토리얼 중 가장 큰 수를 리턴해야 한다.
 
 function solution(n: number) {
-	let fact = 1;
-	let value = 1;
+	let fact = 1
+	let value = 1
 
 	while (value * (fact + 1) <= n) {
-		fact += 1;
-		value *= fact;
+		fact += 1
+		value *= fact
 	}
 
-	return fact;
+	return fact
 }
 
-console.log(solution(3628800)); // 10
-console.log(solution(7)); // 3
+console.log(solution(3628800)) // 10
+console.log(solution(7)) // 3

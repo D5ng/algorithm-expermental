@@ -1,4 +1,4 @@
-type AsyncTask = () => Promise<unknown>;
+type AsyncTask = () => Promise<unknown>
 
 /**
  * 등록된 비동기 작업을 한 번에 하나씩 순차적으로 실행하는 작업 큐.
@@ -27,57 +27,57 @@ type AsyncTask = () => Promise<unknown>;
  * ```
  */
 export class SequentialTaskQueue<Task extends AsyncTask = AsyncTask> {
-  /** 현재 대기열 큐 */
-  private queue: Task[];
-  /** run 중복 방지 */
-  private isRunning: boolean;
+	/** 현재 대기열 큐 */
+	private queue: Task[]
+	/** run 중복 방지 */
+	private isRunning: boolean
 
-  constructor() {
-    this.queue = [];
-    this.isRunning = false;
-  }
+	constructor() {
+		this.queue = []
+		this.isRunning = false
+	}
 
-  enqueue(task: Task) {
-    this.queue.push(task);
-  }
+	enqueue(task: Task) {
+		this.queue.push(task)
+	}
 
-  get size() {
-    return this.queue.length;
-  }
+	get size() {
+		return this.queue.length
+	}
 
-  async run(): Promise<void> {
-    if (this.isRunning) {
-      return;
-    }
+	async run(): Promise<void> {
+		if (this.isRunning) {
+			return
+		}
 
-    this.isRunning = true;
+		this.isRunning = true
 
-    try {
-      while (this.hasTask) {
-        await this.runNextTask();
-      }
-    } finally {
-      this.isRunning = false;
-    }
-  }
+		try {
+			while (this.hasTask) {
+				await this.runNextTask()
+			}
+		} finally {
+			this.isRunning = false
+		}
+	}
 
-  private get hasTask() {
-    return this.size > 0;
-  }
+	private get hasTask() {
+		return this.size > 0
+	}
 
-  // 각 작업을 처리하는 함수
-  private async runNextTask() {
-    // 가장 오래된 작업 꺼내기
-    const nextTask = this.queue.shift();
+	// 각 작업을 처리하는 함수
+	private async runNextTask() {
+		// 가장 오래된 작업 꺼내기
+		const nextTask = this.queue.shift()
 
-    if (nextTask === undefined) {
-      return;
-    }
+		if (nextTask === undefined) {
+			return
+		}
 
-    try {
-      await nextTask();
-    } catch {
-      /* NOTE: 요구사항에서는 실패해도 다음 작업을 이어가도록 함 */
-    }
-  }
+		try {
+			await nextTask()
+		} catch {
+			/* NOTE: 요구사항에서는 실패해도 다음 작업을 이어가도록 함 */
+		}
+	}
 }

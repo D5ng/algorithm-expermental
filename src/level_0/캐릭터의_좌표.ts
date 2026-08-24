@@ -25,44 +25,44 @@ const DIRECTION_OFFSET: Record<string, [number, number]> = {
 	right: [1, 0],
 	up: [0, 1],
 	down: [0, -1],
-};
+}
 
-type Coordinate = [x: number, y: number];
+type Coordinate = [x: number, y: number]
 
 // 최대 이동 범위를 계산하는 함수
 function calculateMaxMovementRange(boardDimensions: number[]): Coordinate {
-	const [width, height] = boardDimensions;
+	const [width, height] = boardDimensions
 	// 변경 가능성을 고려하여 map을 사용하지 않음.
 	// `boardDimensions.map((value) => Math.floor(value / 2))` 라는 코드를 작성해도 되지만, 정책이 변경된다면 이 코드는 사용할 수 없게됨.
-	return [Math.floor(width / 2), Math.floor(height / 2)];
+	return [Math.floor(width / 2), Math.floor(height / 2)]
 }
 
 function clampToLimit(value: number, limit: number): number {
-	return Math.max(-limit, Math.min(limit, value));
+	return Math.max(-limit, Math.min(limit, value))
 }
 
 // keyinput에 따라 이동 범위를 계산하는 함수
 // 즉 최종 좌표를 계산하는 함수
 function calculateFinalCoordinates(keyinput: string[], movementBoundary: Coordinate): Coordinate {
-	const [maxX, maxY] = movementBoundary;
+	const [maxX, maxY] = movementBoundary
 
-	let currentX = 0;
-	let currentY = 0;
+	let currentX = 0
+	let currentY = 0
 
 	for (const key of keyinput) {
-		const [dx, dy] = DIRECTION_OFFSET[key];
-		currentX = clampToLimit(currentX + dx, maxX);
-		currentY = clampToLimit(currentY + dy, maxY);
+		const [dx, dy] = DIRECTION_OFFSET[key]
+		currentX = clampToLimit(currentX + dx, maxX)
+		currentY = clampToLimit(currentY + dy, maxY)
 	}
 
-	return [currentX, currentY];
+	return [currentX, currentY]
 }
 
 function 캐릭터의_좌표(keyinput: string[], board: number[]) {
-	const movementBoundary = calculateMaxMovementRange(board);
-	return calculateFinalCoordinates(keyinput, movementBoundary);
+	const movementBoundary = calculateMaxMovementRange(board)
+	return calculateFinalCoordinates(keyinput, movementBoundary)
 }
 
-console.log(캐릭터의_좌표(["left", "right", "up", "right", "right"], [11, 11])); // [2, 1]
-console.log(캐릭터의_좌표(["down", "down", "down", "down", "down"], [7, 9])); // [0, -4]
-console.log(캐릭터의_좌표(["right", "right", "right", "right", "right", "left"], [9, 5])); // [3, 0]
+console.log(캐릭터의_좌표(["left", "right", "up", "right", "right"], [11, 11])) // [2, 1]
+console.log(캐릭터의_좌표(["down", "down", "down", "down", "down"], [7, 9])) // [0, -4]
+console.log(캐릭터의_좌표(["right", "right", "right", "right", "right", "left"], [9, 5])) // [3, 0]

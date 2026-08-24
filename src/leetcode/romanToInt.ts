@@ -53,74 +53,71 @@
  */
 
 const romanMap = {
-  I: 1,
-  V: 5,
-  X: 10,
-  L: 50,
-  C: 100,
-  D: 500,
-  M: 1000,
-};
+	I: 1,
+	V: 5,
+	X: 10,
+	L: 50,
+	C: 100,
+	D: 500,
+	M: 1000,
+}
 
 // 현재 값과 다음 값을 기준으로 문제 풀이
 export function romanToInt(roman: string): number {
-  let result = 0;
+	let result = 0
 
-  for (let index = 0; index < roman.length; index++) {
-    const currentValue = getRomanValue(roman[index]);
-    const nextValue = getRomanValue(roman[index + 1]);
+	for (let index = 0; index < roman.length; index++) {
+		const currentValue = getRomanValue(roman[index])
+		const nextValue = getRomanValue(roman[index + 1])
 
-    const { value, consumedNext } = resolvePairValue(currentValue, nextValue);
+		const { value, consumedNext } = resolvePairValue(currentValue, nextValue)
 
-    result += value;
+		result += value
 
-    if (consumedNext) {
-      index += 1;
-    }
-  }
+		if (consumedNext) {
+			index += 1
+		}
+	}
 
-  return result;
+	return result
 }
 
 function getRomanValue(char: string | undefined): number {
-  return char === undefined ? 0 : romanMap[char];
+	return char === undefined ? 0 : romanMap[char]
 }
 
-function resolvePairValue(
-  currentValue: number,
-  nextValue: number,
-): { value: number; consumedNext: boolean } {
-  let value = 0;
-  let consumedNext = false;
+function resolvePairValue(currentValue: number, nextValue: number): { value: number; consumedNext: boolean } {
+	let value = 0
+	let consumedNext = false
 
-  if (currentValue >= nextValue) {
-    value = currentValue;
-  } else {
-    value = nextValue - currentValue;
-    consumedNext = true;
-  }
+	if (currentValue >= nextValue) {
+		value = currentValue
+	} else {
+		value = nextValue - currentValue
+		consumedNext = true
+	}
 
-  return { value, consumedNext };
+	return { value, consumedNext }
 }
 
 // 현재 값과 이전 값을 기준으로 문제 풀이
 export function romanToInt2(roman: string): number {
-  let result = 0;
-  let prevValue = 0;
+	let result = 0
+	let prevValue = 0
 
-  for (let index = 0; index < roman.length; index++) {
-    const currentValue = getRomanValue(roman[index]);
+	for (let index = 0; index < roman.length; index++) {
+		const currentValue = getRomanValue(roman[index])
 
-    if (currentValue > prevValue) {
-      result += currentValue - prevValue * 2;
-    } else {
-      result += currentValue;
-    }
+		if (currentValue > prevValue) {
+			result += currentValue - prevValue * 2
+		} else {
+			result += currentValue
+		}
 
-    prevValue = currentValue;
-  }
+		prevValue = currentValue
+	}
 
-  return result;
+	return result
 }
 
 /**

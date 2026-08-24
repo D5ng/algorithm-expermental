@@ -7,62 +7,62 @@
 // * 작업이 반환한 Promise가 거부되더라도 해당 오류는 별도의 처리 없이 무시해야 합니다.
 // * 어떤 작업이 실패하더라도 큐는 중단되지 않고 남아 있는 작업을 계속 처리해야 합니다.
 
-type AsyncTask = () => Promise<unknown>;
+type AsyncTask = () => Promise<unknown>
 
 export class AsyncTaskQueue<Task extends AsyncTask = AsyncTask> {
-  /** 최대 동시 실행 수 */
-  private concurrency: number;
-  /** 실행중인 작업 개수 */
-  private runningTaskCount: number;
-  /** 대기중인 작업 큐 */
-  private pendingQueue: Task[];
+	/** 최대 동시 실행 수 */
+	private concurrency: number
+	/** 실행중인 작업 개수 */
+	private runningTaskCount: number
+	/** 대기중인 작업 큐 */
+	private pendingQueue: Task[]
 
-  constructor(concurrency: number) {
-    // Initialize the queue with the specified concurrency limit
-    this.concurrency = concurrency;
-    this.runningTaskCount = 0;
-    this.pendingQueue = [];
-  }
+	constructor(concurrency: number) {
+		// Initialize the queue with the specified concurrency limit
+		this.concurrency = concurrency
+		this.runningTaskCount = 0
+		this.pendingQueue = []
+	}
 
-  async queue(task: Task) {
-    // Add an async task to the queue
-    // 현재 실행중인 작업 개수가 최대 동시 작업 수보다 같거나 크면 무시
-    if (this.hasReachedConcurrencyLimit()) {
-      this.pendingQueue.push(task);
-      return;
-    }
+	async queue(task: Task) {
+		// Add an async task to the queue
+		// 현재 실행중인 작업 개수가 최대 동시 작업 수보다 같거나 크면 무시
+		if (this.hasReachedConcurrencyLimit()) {
+			this.pendingQueue.push(task)
+			return
+		}
 
-    // 현재 실행중인 작업의 개수를 증가
-    this.runningTaskCount += 1;
+		// 현재 실행중인 작업의 개수를 증가
+		this.runningTaskCount += 1
 
-    // task가 동기적인 상황에서의 예외처리
-    try {
-      await task();
-    } catch (error) {
-      /** 에러 발생 */
-    }
+		// task가 동기적인 상황에서의 예외처리
+		try {
+			await task()
+		} catch (error) {
+			/** 에러 발생 */
+		}
 
-    // 작업이 끝났다면 현재 실행 중인 작업 감소
-    this.runningTaskCount -= 1;
+		// 작업이 끝났다면 현재 실행 중인 작업 감소
+		this.runningTaskCount -= 1
 
-    // 가장 오래된 함수(작업) 가져오기
-    const nextTask = this.pendingQueue.shift();
+		// 가장 오래된 함수(작업) 가져오기
+		const nextTask = this.pendingQueue.shift()
 
-    // 가장 오래된 작업이 없다면 종료
-    if (nextTask === undefined) {
-      return;
-    }
+		// 가장 오래된 작업이 없다면 종료
+		if (nextTask === undefined) {
+			return
+		}
 
-    this.queue(nextTask);
-  }
+		this.queue(nextTask)
+	}
 
-  /**
-   * 현재 실행중인 작업 개수가 최대 동시 작업 수보다 같은지 판별
-   * @returns boolean
-   */
-  private hasReachedConcurrencyLimit() {
-    return this.runningTaskCount >= this.concurrency;
-  }
+	/**
+	 * 현재 실행중인 작업 개수가 최대 동시 작업 수보다 같은지 판별
+	 * @returns boolean
+	 */
+	private hasReachedConcurrencyLimit() {
+		return this.runningTaskCount >= this.concurrency
+	}
 }
 
 /**

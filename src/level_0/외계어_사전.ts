@@ -23,18 +23,18 @@
  */
 
 export function 외계어_사전(spell: string[], dic: string[]) {
-	const targetSpell = [...spell].sort().join("");
+	const targetSpell = [...spell].sort().join("")
 	const hasMatch = dic.some((word) => {
 		if (word.length !== targetSpell.length) {
-			return false;
+			return false
 		}
 
-		return [...word].sort().join("") === targetSpell;
-	});
+		return [...word].sort().join("") === targetSpell
+	})
 
-	return hasMatch ? 1 : 2;
+	return hasMatch ? 1 : 2
 }
 
-console.log(외계어_사전(["p", "o", "s"], ["sod", "eocd", "qixm", "adio", "soo"]));
-console.log(외계어_사전(["z", "d", "x"], ["def", "dww", "dzx", "loveaw"]));
-console.log(외계어_사전(["s", "o", "m", "d"], ["moos", "dzx", "smm", "sunmmo", "som"]));
+console.log(외계어_사전(["p", "o", "s"], ["sod", "eocd", "qixm", "adio", "soo"]))
+console.log(외계어_사전(["z", "d", "x"], ["def", "dww", "dzx", "loveaw"]))
+console.log(외계어_사전(["s", "o", "m", "d"], ["moos", "dzx", "smm", "sunmmo", "som"]))

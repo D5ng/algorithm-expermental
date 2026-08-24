@@ -17,26 +17,26 @@
 
 export function 가까운_수(array: number[], n: number) {
 	return array.reduce((acc, cur, index) => {
-		const 현재차이 = Math.abs(cur - n);
-		const 기존차이 = Math.abs(acc - n);
+		const 현재차이 = Math.abs(cur - n)
+		const 기존차이 = Math.abs(acc - n)
 
 		if (기존차이 === 현재차이 && acc > cur) {
-			return cur;
+			return cur
 		}
 
 		if (기존차이 > 현재차이) {
-			return array[index];
+			return array[index]
 		}
 
-		return acc;
-	});
+		return acc
+	})
 }
 
-console.log(가까운_수([28, 10, 3], 20)); // 28
-console.log(가까운_수([3, 10, 28], 20)); // 28
-console.log(가까운_수([10, 11, 12], 13)); // 12
-console.log(가까운_수([4, 6], 5)); // 4
-console.log(가까운_수([6, 4], 5)); // 4
+console.log(가까운_수([28, 10, 3], 20)) // 28
+console.log(가까운_수([3, 10, 28], 20)) // 28
+console.log(가까운_수([10, 11, 12], 13)) // 12
+console.log(가까운_수([4, 6], 5)) // 4
+console.log(가까운_수([6, 4], 5)) // 4
 
 // Note for문을 활용하여 구현하기
 // export function 가까운_수(array: number[], n: number) {

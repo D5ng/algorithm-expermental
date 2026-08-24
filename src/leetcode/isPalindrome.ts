@@ -38,30 +38,30 @@
  */
 
 export function isPalindrome(x: number): boolean {
-  if (x < 0) {
-    return false;
-  }
+	if (x < 0) {
+		return false
+	}
 
-  if (x < 10) {
-    return true;
-  }
+	if (x < 10) {
+		return true
+	}
 
-  return reverseInteger(x) === x;
+	return reverseInteger(x) === x
 }
 
 // 정수를 뒤집는 역할
 function reverseInteger(value: number): number {
-  let remainingValue = value;
-  let reversedValue = 0;
+	let remainingValue = value
+	let reversedValue = 0
 
-  while (remainingValue > 0) {
-    const remainder = remainingValue % 10;
+	while (remainingValue > 0) {
+		const remainder = remainingValue % 10
 
-    reversedValue = reversedValue * 10 + remainder;
-    remainingValue = Math.floor(remainingValue / 10);
-  }
+		reversedValue = reversedValue * 10 + remainder
+		remainingValue = Math.floor(remainingValue / 10)
+	}
 
-  return reversedValue;
+	return reversedValue
 }
 
 /**
