@@ -1,40 +1,45 @@
-export function cloneDeepStack<T>(sourceObject: T) {
-  if (isPrimitive(sourceObject)) {
-    return sourceObject;
-  }
+type StackItem = { sourceObject: any; cloned: any }
 
-  const cloned = Array.isArray(sourceObject) ? [] : {};
-  const stack = [{ sourceObject, cloned }];
+export function cloneDeepStack<T>(sourceObject: T): T {
+	if (isPrimitive(sourceObject)) {
+		return sourceObject
+	}
 
-  while (stack.length > 0) {
-    const { sourceObject, cloned } = stack.pop();
+	const cloned = Array.isArray(sourceObject) ? [] : {}
+	const stack: StackItem[] = [{ sourceObject, cloned }]
 
-    for (const [key, value] of Object.entries(sourceObject)) {
-      if (isPrimitive(value)) {
-        cloned[key] = value;
-        continue;
-      }
+	while (stack.length > 0) {
+		const item = stack.pop()
+		if (item === undefined) {
+			continue
+		}
 
-      const children = Array.isArray(value) ? [] : {};
-      cloned[key] = children;
+		const { sourceObject, cloned } = item
 
-      stack.push({ sourceObject: value, cloned: children });
-    }
-  }
+		for (const [key, value] of Object.entries(sourceObject)) {
+			if (isPrimitive(value)) {
+				cloned[key] = value
+				continue
+			}
 
-  return cloned as T;
+			const children = Array.isArray(value) ? [] : {}
+			cloned[key] = children
+
+			stack.push({ sourceObject: value, cloned: children })
+		}
+	}
+
+	return cloned as T
 }
 
-function isPrimitive(
-  value: unknown,
-): value is string | number | boolean | null | undefined | symbol | bigint {
-  return (
-    value === null ||
-    value === undefined ||
-    typeof value === "string" ||
-    typeof value === "number" ||
-    typeof value === "bigint" ||
-    typeof value === "symbol" ||
-    typeof value === "boolean"
-  );
+function isPrimitive(value: unknown): value is string | number | boolean | null | undefined | symbol | bigint {
+	return (
+		value === null ||
+		value === undefined ||
+		typeof value === "string" ||
+		typeof value === "number" ||
+		typeof value === "bigint" ||
+		typeof value === "symbol" ||
+		typeof value === "boolean"
+	)
 }

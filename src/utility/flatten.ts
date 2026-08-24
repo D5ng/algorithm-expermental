@@ -21,18 +21,21 @@
  * @param arr
  * @param depth
  */
-export function flatten(arr: any[], depth = 1) {
-  const flattened = [];
 
-  for (const element of arr) {
-    if (canFlatten(element, depth)) {
-      flattened.push(...flatten(element, depth - 1));
-    } else {
-      flattened.push(element);
-    }
-  }
+type Nested<T> = T | Nested<T>[]
 
-  return flattened;
+export function flatten<T>(arr: Nested<T>[], depth = 1): Nested<T>[] {
+	const flattened: Nested<T>[] = []
+
+	for (const element of arr) {
+		if (canFlatten(element, depth)) {
+			flattened.push(...flatten(element, depth - 1))
+		} else {
+			flattened.push(element)
+		}
+	}
+
+	return flattened
 }
 
 /**
@@ -41,8 +44,8 @@ export function flatten(arr: any[], depth = 1) {
  * @param depth 평탄화할 깊이
  * @returns boolean
  */
-function canFlatten(value: any, depth: number) {
-  return Array.isArray(value) && depth > 0;
+function canFlatten<T>(value: any, depth: number): value is Nested<T>[] {
+	return Array.isArray(value) && depth > 0
 }
 
 /**

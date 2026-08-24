@@ -39,18 +39,20 @@
  * 해시 맵을 사용해 필요한 값의 인덱스를 빠르게 찾을 수 있다.
  */
 
-export function twoSum(nums: number[], target: number): number[] | undefined {
-  const map = new Map(nums.map((value, index) => [value, index]));
+export function twoSum(nums: number[], target: number): number[] {
+	const map = new Map(nums.map((value, index) => [value, index]))
 
-  for (const [index, value] of nums.entries()) {
-    const diffValue = target - value;
-    const matchedIndex = map.get(diffValue);
+	for (const [index, value] of nums.entries()) {
+		const diffValue = target - value
+		const matchedIndex = map.get(diffValue)
 
-    const hasValidMatch = matchedIndex !== undefined && index !== matchedIndex;
-    if (hasValidMatch) {
-      return [index, matchedIndex];
-    }
-  }
+		const hasValidMatch = matchedIndex !== undefined && index !== matchedIndex
+		if (hasValidMatch) {
+			return [index, matchedIndex]
+		}
+	}
+
+	throw new Error("twoSum: 조건을 만족하는 쌍을 찾지 못했습니다")
 }
 
 /**

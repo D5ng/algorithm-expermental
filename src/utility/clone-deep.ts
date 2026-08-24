@@ -10,7 +10,7 @@
 
 export function cloneDeep<T>(sourceObject: T, hash = new WeakMap()): T {
 	if (isPrimitive(sourceObject)) {
-		return sourceObject;
+		return sourceObject
 	}
 
 	if (hash.has(sourceObject as object)) {
@@ -18,32 +18,39 @@ export function cloneDeep<T>(sourceObject: T, hash = new WeakMap()): T {
 	}
 
 	if (isDate(sourceObject)) {
-		return new Date(sourceObject) as T;
+		return new Date(sourceObject) as T
 	}
 
 	if (isRegExp(sourceObject)) {
-		return new RegExp(sourceObject) as T;
+		return new RegExp(sourceObject) as T
 	}
 
-	const container = (Array.isArray(sourceObject) ? [] : {}) as T;
-	hash.set(sourceObject as object, container);
+	const container = (Array.isArray(sourceObject) ? [] : {}) as T
+	hash.set(sourceObject as object, container)
 
-	for (const [key, value] of Object.entries(sourceObject)) {
-		container[key] = cloneDeep(value, hash);
+	for (const [key, value] of Object.entries(sourceObject as object)) {
+		container[key] = cloneDeep(value, hash)
 	}
 
-	return container;
+	return container
 }
 
 function isPrimitive(data: unknown): data is string | number | boolean | null | undefined | symbol | bigint {
-	return data === null || data === undefined || typeof data === "string" || typeof data === "number" || typeof data === "boolean" || typeof data === "symbol" || typeof data === "bigint";
+	return (
+		data === null ||
+		data === undefined ||
+		typeof data === "string" ||
+		typeof data === "number" ||
+		typeof data === "boolean" ||
+		typeof data === "symbol" ||
+		typeof data === "bigint"
+	)
 }
 
-
 function isDate(data: unknown): data is Date {
-	return data instanceof Date;
+	return data instanceof Date
 }
 
 function isRegExp(data: unknown): data is RegExp {
-	return data instanceof RegExp;
+	return data instanceof RegExp
 }

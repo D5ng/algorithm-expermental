@@ -16,21 +16,16 @@
  */
 
 export function pick<T extends object, K extends keyof T>(sourceObject: T, keysToPick: K[]): Pick<T, K> {
-	const pickSet = new Set(keysToPick);
-	return createFilterObject(sourceObject, (key: K) => pickSet.has(key)) as Pick<T, K>;
+	const pickSet = new Set<PropertyKey>(keysToPick)
+	return createFilterObject(sourceObject, (key: keyof T) => pickSet.has(key)) as Pick<T, K>
 }
 
 export function omit<T extends object, K extends keyof T>(sourceObject: T, keysToOmit: K[]): Omit<T, K> {
-	const omitSet = new Set<PropertyKey>(keysToOmit);
-	return createFilterObject(sourceObject, (key: K) => !omitSet.has(key)) as Omit<T, K>;
+	const omitSet = new Set<PropertyKey>(keysToOmit)
+	return createFilterObject(sourceObject, (key: keyof T) => !omitSet.has(key)) as Omit<T, K>
 }
 
-function createFilterObject<T extends object>(
-	sourceObject: T,
-	predicate: (key: keyof T, value: T[keyof T]) => boolean,
-): Partial<T> {
-	const matchingPropertyEntries = Object.entries(sourceObject).filter(([key, value]) =>
-		predicate(key as keyof T, value),
-	);
-	return Object.fromEntries(matchingPropertyEntries) as Partial<T>;
+function createFilterObject<T extends object>(sourceObject: T, predicate: (key: keyof T, value: T[keyof T]) => boolean): Partial<T> {
+	const matchingPropertyEntries = Object.entries(sourceObject).filter(([key, value]) => predicate(key as keyof T, value))
+	return Object.fromEntries(matchingPropertyEntries) as Partial<T>
 }
