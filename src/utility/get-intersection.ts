@@ -13,20 +13,15 @@
  * @returns {any[]}
  */
 export function getIntersection(left: any[], right: any[]) {
-	const intersectionSet = new Set()
-
+	/* 순회할 대상과 조회할 대상을 찾는다 */
 	const shortestArray = left.length > right.length ? right : left
 	const longestArray = shortestArray === right ? left : right
 
+	/* 조회할 테이블을 만든다 */
 	const longestArrayLookup = Object.fromEntries(longestArray.map((value) => [value, true]))
 
-	for (const value of shortestArray) {
-		if (longestArrayLookup[value]) {
-			intersectionSet.add(value)
-		}
-	}
-
-	return [...intersectionSet]
+	/* 공통 요소인지 판별하고 필터링한다 */
+	return [...new Set(shortestArray.filter((value) => longestArrayLookup[value]))]
 }
 
 /**
