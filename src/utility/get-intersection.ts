@@ -8,20 +8,37 @@
  */
 
 /**
- * @param {any[]} arr1
- * @param {any[]} arr2
- * @returns {any[]}
+ * 두 배열에서 공통으로 존재하는 모든 요소를 반환
+ * @param left 순서와 상관없는 배열
+ * @param right 순서와 상관없는 배열
+ * @returns 중복없는 공통 요소의 배열
  */
 export function getIntersection(left: any[], right: any[]) {
-	/* 순회할 대상과 조회할 대상을 찾는다 */
-	const shortestArray = left.length > right.length ? right : left
-	const longestArray = shortestArray === right ? left : right
+	const { iterationTarget, lookupTarget } = resolveTargets(left, right)
+	const lookup = buildLookup(lookupTarget)
 
-	/* 조회할 테이블을 만든다 */
-	const longestArrayLookup = Object.fromEntries(longestArray.map((value) => [value, true]))
+	return [...new Set(iterationTarget.filter((value) => lookup[value]))]
+}
 
-	/* 공통 요소인지 판별하고 필터링한다 */
-	return [...new Set(shortestArray.filter((value) => longestArrayLookup[value]))]
+/**
+ * 순회할 대상과 조회할 대상을 결정
+ * @param left 매개변수 순서와 상관없는 배열
+ * @param right 매개변수 순서와 상관없는 배열
+ * @returns { iterationTarget, lookupTarget }
+ */
+function resolveTargets(left: any[], right: any[]) {
+	const iterationTarget = left.length > right.length ? right : left
+	const lookupTarget = iterationTarget === right ? left : right
+	return { iterationTarget, lookupTarget }
+}
+
+/**
+ * 조회 가능한 데이터를 만듭니다
+ * @param value 조회 가능한 형태로 바꿀 값들
+ * @returns 조회 가능한 데이터
+ */
+function buildLookup<T extends PropertyKey>(values: T[]): Record<T, boolean> {
+	return Object.fromEntries(values.map((value) => [value, true])) as Record<T, boolean>
 }
 
 /**
@@ -59,12 +76,12 @@ export function getIntersection(left: any[], right: any[]) {
  *
  * 예외처리:
  * - 중복된 값은 포함하면 안된다.
- * - `arr1`과 `arr2`에 중복된 값이 없다면 빈 배열을 반환한다.
+ * - `left`과 `right`에 중복된 값이 없다면 빈 배열을 반환한다.
  * - 두 배열 중 하나라도 빈 배열이 있다면 빈 배열을 반환한다.
  *
  * 복잡도:
- *   - n: `longestArray` 길이
- *   - m: `shortestArray` 길이
+ *   - n: `lookupTarget` 길이
+ *   - m: `iterationTarget` 길이
  * - 시간 복잡도 O(n + m)
  * - 공간 복잡도 O(n + m)
  */
