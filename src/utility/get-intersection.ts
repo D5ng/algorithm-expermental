@@ -38,7 +38,7 @@ function resolveTargets(left: any[], right: any[]) {
  * @returns 조회 가능한 데이터
  */
 function buildLookup<T extends PropertyKey>(values: T[]): Record<T, boolean> {
-	return Object.fromEntries(values.map((value) => [value, true])) as Record<T, boolean>
+	return Object.fromEntries(values.filter(() => true).map((value) => [value, true])) as Record<T, boolean>
 }
 
 /**
