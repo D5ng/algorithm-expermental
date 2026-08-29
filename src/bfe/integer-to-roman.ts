@@ -36,7 +36,7 @@ export function integerToRoman(num: number) {
 	 * 이 코드가 맡은 역할: 뺄셈 표기까지 포함한 값-로마 문자 쌍을, 큰 값부터 정렬된 순서로 준비한다
 	 * 전체 목적에 기여하는것: 자릿수를 세지않고 올바른 로마 숫자가 나올 수 있도록 보장한다
 	 */
-	const values = [
+	const romanNumerals = [
 		[1000, "M"],
 		[900, "CM"],
 		[500, "D"],
@@ -66,11 +66,11 @@ export function integerToRoman(num: number) {
 	let result = ""
 
 	/**
-	 * 코드 그대로 설명: 큰 값부터 정렬된 values를 위에서부터 반복하며, n이 그 값 이상이라면 몫만큼 로마 숫자를 반복해 result에 이어붙이고, n을 나머지로 업데이트한다
+	 * 코드 그대로 설명: 큰 값부터 정렬된 romanNumerals를 위에서부터 반복하며, n이 그 값 이상이라면 몫만큼 로마 숫자를 반복해 result에 이어붙이고, n을 나머지로 업데이트한다
 	 * 이 코드가 맡은 역할:
 	 * 전체 목적에 기여하는것: 로마 숫자를 올바르게 처리하기 위해 값을 처리한다
 	 */
-	for (const [value, romanChar] of values) {
+	for (const [value, numeral] of romanNumerals) {
 		if (n >= value) {
 			/**
 			 * 코드 그대로 설명: n / value로 소수점을 버린 몫만 남긴다
@@ -83,7 +83,7 @@ export function integerToRoman(num: number) {
 			 * 이 코드가 맡은 역할: 해당 로마 숫자를 count개수만큼 이어붙인다.
 			 * 전체 목적에 기여하는것: 규칙에 맞는 로마 숫자가 나올 수 있도록 보장한다
 			 */
-			result += romanChar.toString().repeat(count)
+			result += numeral.repeat(count)
 			/**
 			 * 코드 그대로 설명: n % value 나머지를 구하고 n에 할당한다
 			 * 이 코드가 맡은 역할: 나머지 값을 업데이트하여 다음 로마 숫자가 무엇이 나올지 준비한다
