@@ -53,7 +53,7 @@ export function integerToRoman(num: number) {
 	] as const
 
 	/**
-	 * 코드 그대로 설명: 매개변수를 n에 할당한다
+	 * 코드 그대로 설명: 매개변수를 remaining에 할당한다
 	 * 이 코드가 맡은 역할: 아직 로마 숫자로 변환하지 못한 나머지 값을 추적한다
 	 * 전체 목적에 기여하는것: 이 값이 0이 될 때까지 루프가 더 처리할 게 남았는지 판단하게 하고, 결국 num 전체가 빠짐없이 로마 숫자로 옮겨지도록 보장한다
 	 */
@@ -66,9 +66,9 @@ export function integerToRoman(num: number) {
 	let result = ""
 
 	/**
-	 * 코드 그대로 설명: 큰 값부터 정렬된 romanNumerals를 위에서부터 반복하며, n이 그 값 이상이라면 몫만큼 로마 숫자를 반복해 result에 이어붙이고, n을 나머지로 업데이트한다
-	 * 이 코드가 맡은 역할:
-	 * 전체 목적에 기여하는것: 로마 숫자를 올바르게 처리하기 위해 값을 처리한다
+	 * 코드 그대로 설명: 큰 값부터 정렬된 romanNumerals를 위에서부터 반복하며, remaining이 그 값 이상이라면 몫만큼 로마 숫자를 반복해 result에 이어붙이고, remaining을 나머지로 업데이트한다
+	 * 이 코드가 맡은 역할: 주어진 숫자를 큰 값의 numeral부터 순서대로 변환한다
+	 * 전체 목적에 기여하는것: 완성된 로마 숫자를 반환한다
 	 */
 	for (const [value, numeral] of romanNumerals) {
 		if (remaining >= value) {
