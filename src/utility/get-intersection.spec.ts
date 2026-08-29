@@ -25,4 +25,14 @@ describe("getIntersection", () => {
 
 		expect(result.sort()).toEqual([])
 	})
+
+	it("배열에 empty 요소가 있다면 제거하고 공통 요소를 반환환다", () => {
+		const result = getIntersection(
+			// biome-ignore lint/suspicious/noSparseArray: 테스트 목적
+			[1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 3, 3, 3, 3, 3, , 2, 2, 2],
+			[2],
+		)
+
+		expect(result.sort()).toEqual([2])
+	})
 })
