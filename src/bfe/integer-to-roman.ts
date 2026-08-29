@@ -57,7 +57,7 @@ export function integerToRoman(num: number) {
 	 * 이 코드가 맡은 역할: 아직 로마 숫자로 변환하지 못한 나머지 값을 추적한다
 	 * 전체 목적에 기여하는것: 이 값이 0이 될 때까지 루프가 더 처리할 게 남았는지 판단하게 하고, 결국 num 전체가 빠짐없이 로마 숫자로 옮겨지도록 보장한다
 	 */
-	let n = num
+	let remaining = num
 	/**
 	 * 코드 그대로 설명: 빈 값을 담는다
 	 * 이 코드가 맡은 역할: 로마 문자열을 이어붙일 수 있는 데이터
@@ -71,13 +71,13 @@ export function integerToRoman(num: number) {
 	 * 전체 목적에 기여하는것: 로마 숫자를 올바르게 처리하기 위해 값을 처리한다
 	 */
 	for (const [value, numeral] of romanNumerals) {
-		if (n >= value) {
+		if (remaining >= value) {
 			/**
-			 * 코드 그대로 설명: n / value로 소수점을 버린 몫만 남긴다
+			 * 코드 그대로 설명: remaining / value로 소수점을 버린 몫만 남긴다
 			 * 이 코드가 맡은 역할: 로마 숫자를 몇번 이어붙일건지에 대한 횟수를 말한다
 			 * 전체 목적에 기여하는것: 변환된 로마 숫자가 원래 숫자와 같은 값을 갖도록 보장한다
 			 */
-			const count = Math.floor(n / value)
+			const count = Math.floor(remaining / value)
 			/**
 			 * 코드 그대로 설명: 로마 문자를 문자열로 변환하고 count만큼 반복하고 result에 할당한다
 			 * 이 코드가 맡은 역할: 해당 로마 숫자를 count개수만큼 이어붙인다.
@@ -85,11 +85,11 @@ export function integerToRoman(num: number) {
 			 */
 			result += numeral.repeat(count)
 			/**
-			 * 코드 그대로 설명: n % value 나머지를 구하고 n에 할당한다
+			 * 코드 그대로 설명: remaining % value 나머지를 구하고 remaining에 할당한다
 			 * 이 코드가 맡은 역할: 나머지 값을 업데이트하여 다음 로마 숫자가 무엇이 나올지 준비한다
 			 * 전체 목적에 기여하는것: 이미 표현한 값을 다시 세지 않도록 하기위해 변환 결과가 원래 숫자와 일차하도록 보장한다
 			 */
-			n = n % value
+			remaining %= value
 		}
 	}
 
