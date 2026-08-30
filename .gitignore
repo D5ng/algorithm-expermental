@@ -1,6 +1,7 @@
 node_modules
 
 src/index.ts
+src/practice/
 
 # AI 에이전트 설정
 AGENTS.md
