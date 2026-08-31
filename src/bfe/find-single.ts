@@ -18,8 +18,6 @@
 export function findSingle(arr: number[]): number {
 	const countLookup = {}
 
-	// 시간 복잡도 O(n)
-	// 공간 복잡도 O(k)
 	for (let index = 0; index < arr.length; index += 1) {
 		const value = arr[index]
 
@@ -30,8 +28,6 @@ export function findSingle(arr: number[]): number {
 		}
 	}
 
-	// Object.entries(countLookup) => k개수
-	// filter => k개수
 	return Number(Object.entries(countLookup).filter(([_value, count]) => count === 1)[0][0])
 }
 
