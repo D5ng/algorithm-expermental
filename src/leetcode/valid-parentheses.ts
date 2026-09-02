@@ -35,30 +35,59 @@
  * - s는 `(`, `)`, `[`, `]`, `{`, `}` 문자로만 구성됩니다.
  */
 
-const bracketMap = {
+/* 닫는 괄호에 대응하는 여는 괄호를 조회하는 데이터 */
+const openingBracketByClosingBracket = {
 	")": "(",
 	"]": "[",
 	"}": "{",
 }
 
+/* 주어진 괄호 문자열의 모든 괄호가 올바른 순서와 종류인지 판별한다 */
 export function isValid(brackets: string): boolean {
+	/* 가장 최근에 추가된 여는 괄호가 사용되었는지를 보관한다 */
 	const stack: string[] = []
 
 	for (const bracket of brackets) {
-		const openBracket = bracketMap[bracket]
+		/**
+		 * 직접 바꾸거나 판단하는 것:
+		 * - 현재 괄호가 여는 괄호인지 닫는 괄호인지 구분한다.
+		 * - 여는 괄호라면 이후에 닫는 괄호와 짝이 맞도록 스택에 추가한다
+		 * 다음 흐름이 믿을 수 있는 것:
+		 * - 현재 괄호가 여는 괄호라면, 해당 괄호를 스택에 추가하고 닫는 괄호와 비교할 수 있도록 한다
+		 * - 현재 괄호가 닫는 괄호라면, 스택에서 꺼낸 괄호와 닫는 괄호에 대응하는 여는 괄호와 비교할 수 있다
+		 */
+		/* 닫는 괄호에 대응하는 여는 괄호를 가져온다 */
+		const expectedOpeningBracket = openingBracketByClosingBracket[bracket]
 
-		if (openBracket === undefined) {
+		/* 여는 괄호가 없다면 스택에 추가한다 */
+		if (expectedOpeningBracket === undefined) {
 			stack.push(bracket)
 			continue
 		}
 
-		const latestBracket = stack.pop()
+		/**
+		 * 직접 바꾸거나 판단하는 것:
+		 * - 가장 최근에 추가된 여는 괄호를 꺼내어, 닫는 괄호에 대응하는 여는 괄호가 일치하지 않으면 false를 반환한다
+		 * 다음 흐름이 믿을 수 있는 것:
+		 * - 현재 닫는 괄호는 가장 최근에 아직 닫히지 않은 여는 괄호와 올바른 종류와 순서로 짝지어졌다.
+		 */
+		/* 가장 최근에 사용되지 않은 여는 괄호를 꺼낸다 */
+		const lastOpenedBracket = stack.pop()
 
-		if (latestBracket !== openBracket) {
+		/* 사용되지 않은 여는 괄호가 기대하는 여는 괄호랑 다르다면 false를 반환한다 */
+		if (lastOpenedBracket !== expectedOpeningBracket) {
 			return false
 		}
 	}
 
+	/**
+	 * 직접 바꾸거나 판단하는 것:
+	 * - 닫히지 않은 괄호가 있는지 확인한다
+	 * - 남아있지 않으면 true, 남아있으면 false를 반환한다
+	 * 다음 흐름이 믿을 수 있는 것:
+	 * - 주어진 괄호 문자열이 올바른 종류와 순서로 이루어졌는지에 대한 판별 결과를 받는다
+	 */
+	/* 여는 괄호를 모두 사용했다면 true를 반환한다 */
 	return stack.length === 0
 }
 
